@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "4ops.terraform",
+    "christian-kohler.path-intellisense",
+    "EditorConfig.EditorConfig",
+    "jasonnutter.vscode-codeowners"
+  ]
+}
