@@ -19,6 +19,6 @@ output "security_group_id" {
 }
 
 output "vpn_endpoint" {
-  description = "The VPN endpoint to be configured in the client's wg0.conf file"
+  description = "The VPN endpoint to be configured in the client's `wg0.conf` file"
   value       = format("%s:%s", aws_route53_record.vpn_endpoint.fqdn, var.wireguard_port)
 }
