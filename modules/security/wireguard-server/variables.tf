@@ -29,11 +29,11 @@ variable "public_subnet_id" {
 variable "instance_name" {
   description = "The name of the EC2 instance"
   type        = string
-  default     = "wireguard-01"
+  default     = "wireguard"
 
   validation {
-    condition     = can(regex("^wireguard-[0-9]{2}$", var.instance_name))
-    error_message = "The instance name must follow the 'wireguard-NN' format."
+    condition     = can(regex("^wireguard", var.instance_name))
+    error_message = "The instance name must begin with 'wireguard'."
   }
 }
 
