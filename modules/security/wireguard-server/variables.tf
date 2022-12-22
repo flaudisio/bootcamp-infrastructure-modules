@@ -87,3 +87,9 @@ variable "wireguard_peers" {
   ))
   default = []
 }
+
+variable "allow_ssh_from_cidrs" {
+  description = "A list of CIDRs to be allowed to access the SSH port of the instance"
+  type        = list(string)
+  default     = []
+}

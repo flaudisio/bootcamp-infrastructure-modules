@@ -56,20 +56,25 @@ module "security_group" {
   description = "WireGuard instance - ${var.instance_name}"
   vpc_id      = var.vpc_id
 
-  ingress_with_cidr_blocks = [
-    {
-      rule        = "ssh-tcp"
-      description = "SSH"
-      cidr_blocks = "0.0.0.0/0"
-    },
-    {
-      from_port   = var.wireguard_port
-      to_port     = var.wireguard_port
-      protocol    = "udp"
-      description = "WireGuard"
-      cidr_blocks = "0.0.0.0/0"
-    },
-  ]
+  ingress_with_cidr_blocks = concat(
+    [
+      {
+        from_port   = var.wireguard_port
+        to_port     = var.wireguard_port
+        protocol    = "udp"
+        description = "WireGuard"
+        cidr_blocks = "0.0.0.0/0"
+      }
+    ],
+    [
+      for cidr in var.allow_ssh_from_cidrs :
+      {
+        rule        = "ssh-tcp"
+        description = "SSH from allowed CIDR"
+        cidr_blocks = cidr
+      }
+    ]
+  )
 
   egress_with_cidr_blocks = [
     {
