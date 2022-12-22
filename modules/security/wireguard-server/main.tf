@@ -5,7 +5,7 @@
 locals {
   tags = {
     environment = var.environment
-    service     = var.instance_name
+    service     = "wireguard"
   }
 }
 
