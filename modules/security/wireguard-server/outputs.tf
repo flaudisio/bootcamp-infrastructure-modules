@@ -22,3 +22,8 @@ output "vpn_endpoint" {
   description = "The VPN endpoint to be configured in the client's `wg0.conf` file"
   value       = format("%s:%s", aws_route53_record.vpn_endpoint.fqdn, var.wireguard_port)
 }
+
+output "vpn_public_key_ssm_parameter" {
+  description = "The name of the SSM parameter that stores the VPN public key"
+  value       = aws_ssm_parameter.vpn_public_key.name
+}

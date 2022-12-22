@@ -19,6 +19,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ec2_instance"></a> [ec2\_instance](#module\_ec2\_instance) | terraform-aws-modules/ec2-instance/aws | 4.2.1 |
+| <a name="module_iam_policy"></a> [iam\_policy](#module\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
 
 ## Resources
@@ -29,7 +30,9 @@
 | [aws_key_pair.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
 | [aws_route53_record.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.vpn_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_ssm_parameter.vpn_public_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
@@ -58,4 +61,5 @@
 | <a name="output_instance_public_ip"></a> [instance\_public\_ip](#output\_instance\_public\_ip) | The public IP of the EC2 instance |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The ID of the instance's security group |
 | <a name="output_vpn_endpoint"></a> [vpn\_endpoint](#output\_vpn\_endpoint) | The VPN endpoint to be configured in the client's `wg0.conf` file |
+| <a name="output_vpn_public_key_ssm_parameter"></a> [vpn\_public\_key\_ssm\_parameter](#output\_vpn\_public\_key\_ssm\_parameter) | The name of the SSM parameter that stores the VPN public key |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

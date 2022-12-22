@@ -87,6 +87,60 @@ module "security_group" {
 }
 
 # ------------------------------------------------------------------------------
+# SSM PARAMETER - VPN PUBLIC KEY
+# ------------------------------------------------------------------------------
+
+resource "aws_ssm_parameter" "vpn_public_key" {
+  name        = format("/%s/vpn-public-key", var.instance_name)
+  description = "WireGuard VPN public key - ${var.instance_name} instance"
+
+  type           = "String"
+  insecure_value = "CREATED_BY_TERRAFORM__REPLACE_ME"
+
+  lifecycle {
+    # The parameter value is managed by the Ansible 'wireguard' role, so we
+    # ignore future changes on it to avoid drifts
+    ignore_changes = [insecure_value]
+  }
+
+  tags = local.tags
+}
+
+# ------------------------------------------------------------------------------
+# IAM POLICY
+# ------------------------------------------------------------------------------
+
+data "aws_iam_policy_document" "this" {
+  statement {
+    # Required by Ansible's 'community.aws.ssm_parameter' module
+    actions   = ["ssm:DescribeParameters"]
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "ssm:GetParameter",
+      "ssm:PutParameter",
+    ]
+    resources = [
+      aws_ssm_parameter.vpn_public_key.arn,
+    ]
+  }
+}
+
+module "iam_policy" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  version = "5.9.2"
+
+  name        = var.instance_name
+  description = "Policy for WireGuard instance - ${var.instance_name}"
+
+  policy = data.aws_iam_policy_document.this.json
+
+  tags = local.tags
+}
+
+# ------------------------------------------------------------------------------
 # EC2 INSTANCE
 # ------------------------------------------------------------------------------
 
@@ -124,6 +178,16 @@ module "ec2_instance" {
       volume_size = 10
     },
   ]
+
+  # IAM role
+  create_iam_instance_profile = true
+
+  iam_role_use_name_prefix = false
+  iam_role_description     = "Role for WireGuard instance - ${var.instance_name}"
+
+  iam_role_policies = {
+    instance = module.iam_policy.arn
+  }
 
   volume_tags = local.tags
 
