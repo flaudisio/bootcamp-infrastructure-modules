@@ -48,8 +48,6 @@
 | <a name="input_ami_name"></a> [ami\_name](#input\_ami\_name) | The name of the AMI to be used for the instance | `string` | `"ubuntu/images/*ubuntu-jammy-22.04-*-server-20221206"` | no |
 | <a name="input_ami_owner"></a> [ami\_owner](#input\_ami\_owner) | The owner of the AMI to be used for the instance | `string` | `"099720109477"` | no |
 | <a name="input_instance_name"></a> [instance\_name](#input\_instance\_name) | The name of the EC2 instance | `string` | `"wireguard"` | no |
-| <a name="input_wireguard_address"></a> [wireguard\_address](#input\_wireguard\_address) | The CIDR of the WireGuard server in the VPN tunnel | `string` | `null` | no |
-| <a name="input_wireguard_peers"></a> [wireguard\_peers](#input\_wireguard\_peers) | A list of WireGuard peers to be configured in the server | <pre>list(object(<br>    {<br>      name   = string<br>      pubkey = string<br>      ip     = string<br>    }<br>  ))</pre> | `[]` | no |
 | <a name="input_wireguard_port"></a> [wireguard\_port](#input\_wireguard\_port) | The port where the WireGuard server will listen to | `number` | `51820` | no |
 
 ## Outputs

@@ -64,28 +64,10 @@ variable "public_key" {
   type        = string
 }
 
-variable "wireguard_address" {
-  description = "The CIDR of the WireGuard server in the VPN tunnel"
-  type        = string
-  default     = null
-}
-
 variable "wireguard_port" {
   description = "The port where the WireGuard server will listen to"
   type        = number
   default     = 51820
-}
-
-variable "wireguard_peers" {
-  description = "A list of WireGuard peers to be configured in the server"
-  type = list(object(
-    {
-      name   = string
-      pubkey = string
-      ip     = string
-    }
-  ))
-  default = []
 }
 
 variable "allow_ssh_from_cidrs" {
