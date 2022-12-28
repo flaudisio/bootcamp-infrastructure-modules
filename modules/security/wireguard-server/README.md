@@ -66,7 +66,7 @@ Done! Now you can create VPN peers as you wish.
 |------|------|
 | [aws_eip.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_key_pair.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
-| [aws_route53_record.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.instance_private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.public_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_ssm_parameter.wg_portal_admin_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_password.wg_portal_admin](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
@@ -94,6 +94,8 @@ Done! Now you can create VPN peers as you wish.
 | Name | Description |
 |------|-------------|
 | <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | The ID of the EC2 instance |
+| <a name="output_instance_private_dns"></a> [instance\_private\_dns](#output\_instance\_private\_dns) | The private DNS of the EC2 instance |
+| <a name="output_instance_private_ip"></a> [instance\_private\_ip](#output\_instance\_private\_ip) | The private IP of the EC2 instance |
 | <a name="output_instance_public_dns"></a> [instance\_public\_dns](#output\_instance\_public\_dns) | The public DNS of the EC2 instance |
 | <a name="output_instance_public_ip"></a> [instance\_public\_ip](#output\_instance\_public\_ip) | The public IP of the EC2 instance |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The ID of the instance's security group |

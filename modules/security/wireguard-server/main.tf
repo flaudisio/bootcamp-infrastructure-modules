@@ -216,7 +216,7 @@ resource "aws_eip" "this" {
 # ROUTE 53 RECORD
 # ------------------------------------------------------------------------------
 
-resource "aws_route53_record" "private" {
+resource "aws_route53_record" "instance_private" {
   zone_id = var.account_route53_zone_id
 
   name    = var.instance_name

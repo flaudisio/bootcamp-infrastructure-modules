@@ -3,6 +3,16 @@ output "instance_id" {
   value       = module.ec2_instance.id
 }
 
+output "instance_private_dns" {
+  description = "The private DNS of the EC2 instance"
+  value       = aws_route53_record.instance_private.fqdn
+}
+
+output "instance_private_ip" {
+  description = "The private IP of the EC2 instance"
+  value       = module.ec2_instance.private_ip
+}
+
 output "instance_public_dns" {
   description = "The public DNS of the EC2 instance"
   value       = aws_eip.this.public_dns
