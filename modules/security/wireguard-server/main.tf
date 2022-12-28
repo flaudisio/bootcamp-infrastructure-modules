@@ -62,9 +62,16 @@ module "security_group" {
         from_port   = var.wireguard_port
         to_port     = var.wireguard_port
         protocol    = "udp"
-        description = "WireGuard"
+        description = "WireGuard VPN service"
         cidr_blocks = "0.0.0.0/0"
-      }
+      },
+      {
+        from_port   = 443
+        to_port     = 443
+        protocol    = "tcp"
+        description = "WireGuard Portal"
+        cidr_blocks = "0.0.0.0/0"
+      },
     ],
     [
       for cidr in var.allow_ssh_from_cidrs :
@@ -87,21 +94,23 @@ module "security_group" {
 }
 
 # ------------------------------------------------------------------------------
-# SSM PARAMETER - VPN PUBLIC KEY
+# SSM PARAMETERS
 # ------------------------------------------------------------------------------
 
-resource "aws_ssm_parameter" "vpn_public_key" {
-  name        = format("/%s/vpn-public-key", var.instance_name)
-  description = "WireGuard VPN public key - ${var.instance_name} instance"
+resource "random_password" "wg_portal_admin" {
+  length      = 32
+  special     = false
+  min_lower   = 8
+  min_upper   = 8
+  min_numeric = 8
+}
 
-  type           = "String"
-  insecure_value = "CREATED_BY_TERRAFORM__REPLACE_ME"
+resource "aws_ssm_parameter" "wg_portal_admin_password" {
+  name        = format("/%s/wg-portal-admin-password", var.instance_name)
+  description = "WireGuard Portal admin password - ${var.instance_name} instance"
 
-  lifecycle {
-    # The parameter value is managed by the Ansible 'wireguard' role, so we
-    # ignore future changes on it to avoid drifts
-    ignore_changes = [insecure_value]
-  }
+  type  = "SecureString"
+  value = random_password.wg_portal_admin.result
 
   tags = local.tags
 }
@@ -112,18 +121,11 @@ resource "aws_ssm_parameter" "vpn_public_key" {
 
 data "aws_iam_policy_document" "this" {
   statement {
-    # Required by Ansible's 'community.aws.ssm_parameter' module
-    actions   = ["ssm:DescribeParameters"]
-    resources = ["*"]
-  }
-
-  statement {
     actions = [
       "ssm:GetParameter",
-      "ssm:PutParameter",
     ]
     resources = [
-      aws_ssm_parameter.vpn_public_key.arn,
+      aws_ssm_parameter.wg_portal_admin_password.arn,
     ]
   }
 }
@@ -223,7 +225,7 @@ resource "aws_route53_record" "private" {
   records = [module.ec2_instance.private_ip]
 }
 
-resource "aws_route53_record" "vpn_endpoint" {
+resource "aws_route53_record" "public_endpoint" {
   zone_id = var.account_route53_zone_id
 
   name    = "vpn"

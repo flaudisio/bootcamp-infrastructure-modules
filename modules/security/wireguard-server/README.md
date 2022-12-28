@@ -1,5 +1,41 @@
 # WireGuard Server
 
+## Setting up WireGuard Portal
+
+After deploying the instance, follow the steps below to access WireGuard Portal and to configure the VPN server and clients.
+
+1. Get the WG Portal admin username from the [related Ansible inventory](https://github.com/flaudisio/bootcamp-sre-ansible-playbooks/tree/main/inventories).
+
+1. Get the WG Portal admin password from SSM Parameter Store. Example using AWS CLI:
+
+    ```console
+    $ param_name="$( terragrunt output -raw 'vpn_portal_admin_password_ssm_parameter' )"
+    $ aws ssm get-parameter --name "$param_name" --with-decryption --query 'Parameter.Value' --output text
+    ```
+
+1. Login to the WG Portal web GUI. The portal endpoint is exposed by the `vpn_portal_endpoint` output (e.g. https://vpn.dev.example.com).  
+   After logging in, you'll see the following banner:
+
+    ```plaintext
+    Warning: WireGuard Interface wg0 is not fully configured! Configurations may be incomplete and non functional!
+    ```
+
+To fix it, keep following the steps below:
+
+1. Go to the **Administration** area and open the configuration are of the `wg0` interface.
+
+1. (Required) Set **Public Endpoint for Clients** to the value exposed by the module's `vpn_public_endpoint_for_clients`
+   output (e.g. `vpn.dev.example.com:51820`).
+
+1. (Required) Set **MTU** to `0` to avoid the `Key: 'Device.Mtu' Error:Field validation for 'Mtu' failed on the 'lte' tag`
+   error.
+
+1. (Optional) Change any other fields you may find useful (e.g. DNS Servers, etc).
+
+1. Click the **Save** button.
+
+Done! Now you can create VPN peers as you wish.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -7,12 +43,14 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.4 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.4 |
 
 ## Modules
 
@@ -29,8 +67,9 @@
 | [aws_eip.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_key_pair.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
 | [aws_route53_record.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_route53_record.vpn_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_ssm_parameter.vpn_public_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_route53_record.public_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_ssm_parameter.wg_portal_admin_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [random_password.wg_portal_admin](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
@@ -58,6 +97,7 @@
 | <a name="output_instance_public_dns"></a> [instance\_public\_dns](#output\_instance\_public\_dns) | The public DNS of the EC2 instance |
 | <a name="output_instance_public_ip"></a> [instance\_public\_ip](#output\_instance\_public\_ip) | The public IP of the EC2 instance |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The ID of the instance's security group |
-| <a name="output_vpn_endpoint"></a> [vpn\_endpoint](#output\_vpn\_endpoint) | The VPN endpoint to be configured in the client's `wg0.conf` file |
-| <a name="output_vpn_public_key_ssm_parameter"></a> [vpn\_public\_key\_ssm\_parameter](#output\_vpn\_public\_key\_ssm\_parameter) | The name of the SSM parameter that stores the VPN public key |
+| <a name="output_vpn_portal_admin_password_ssm_parameter"></a> [vpn\_portal\_admin\_password\_ssm\_parameter](#output\_vpn\_portal\_admin\_password\_ssm\_parameter) | The name of the SSM parameter that stores the VPN public key |
+| <a name="output_vpn_portal_endpoint"></a> [vpn\_portal\_endpoint](#output\_vpn\_portal\_endpoint) | The WireGuard Portal endpoint for configuring the VPN service and clients |
+| <a name="output_vpn_public_endpoint_for_clients"></a> [vpn\_public\_endpoint\_for\_clients](#output\_vpn\_public\_endpoint\_for\_clients) | The VPN public endpoint for clients. Use it for the initial setup of WG Portal |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
