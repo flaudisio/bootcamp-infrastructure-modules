@@ -22,33 +22,53 @@ output "azs" {
   value       = module.vpc.azs
 }
 
+output "database_subnets" {
+  description = "The list of IDs of the database subnets"
+  value       = module.vpc.database_subnets
+}
+
+output "database_subnets_cidr_blocks" {
+  description = "The list of CIDRs of the database subnets"
+  value       = module.vpc.database_subnets_cidr_blocks
+}
+
+output "elasticache_subnets" {
+  description = "The list of IDs of the ElastiCache subnets"
+  value       = module.vpc.elasticache_subnets
+}
+
+output "elasticache_subnets_cidr_blocks" {
+  description = "The list of CIDRs of the ElastiCache subnets"
+  value       = module.vpc.elasticache_subnets_cidr_blocks
+}
+
+output "private_route_table_ids" {
+  description = "The list of IDs of the private route tables"
+  value       = module.vpc.private_route_table_ids
+}
+
 output "private_subnets" {
-  description = "The list of the VPC private subnet IDs"
+  description = "The list of IDs of the private subnets"
   value       = module.vpc.private_subnets
 }
 
 output "private_subnets_cidr_blocks" {
-  description = "The list of the VPC private subnet CIDRs"
+  description = "The list of CIDRs of the private subnets"
   value       = module.vpc.private_subnets_cidr_blocks
 }
 
 output "public_subnets" {
-  description = "The list of the VPC public subnet IDs"
+  description = "The list of IDs of the public subnets"
   value       = module.vpc.public_subnets
 }
 
 output "public_subnets_cidr_blocks" {
-  description = "The list of the VPC public subnet CIDRs"
+  description = "The list of CIDRs of public subnets"
   value       = module.vpc.public_subnets_cidr_blocks
 }
 
-output "private_route_table_ids" {
-  description = "The IDs of the private route tables"
-  value       = module.vpc.private_route_table_ids
-}
-
 output "public_route_table_ids" {
-  description = "The IDs of the public route tables"
+  description = "The list of IDs of the public route tables"
   value       = module.vpc.public_route_table_ids
 }
 

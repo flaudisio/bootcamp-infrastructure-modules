@@ -40,13 +40,17 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_azs"></a> [azs](#output\_azs) | The list of eligible AZs for provisioning the VPC subnets |
+| <a name="output_database_subnets"></a> [database\_subnets](#output\_database\_subnets) | The list of IDs of the database subnets |
+| <a name="output_database_subnets_cidr_blocks"></a> [database\_subnets\_cidr\_blocks](#output\_database\_subnets\_cidr\_blocks) | The list of CIDRs of the database subnets |
+| <a name="output_elasticache_subnets"></a> [elasticache\_subnets](#output\_elasticache\_subnets) | The list of IDs of the ElastiCache subnets |
+| <a name="output_elasticache_subnets_cidr_blocks"></a> [elasticache\_subnets\_cidr\_blocks](#output\_elasticache\_subnets\_cidr\_blocks) | The list of CIDRs of the ElastiCache subnets |
 | <a name="output_nat_gateway_ids"></a> [nat\_gateway\_ids](#output\_nat\_gateway\_ids) | The IDs of the NAT Gateways |
-| <a name="output_private_route_table_ids"></a> [private\_route\_table\_ids](#output\_private\_route\_table\_ids) | The IDs of the private route tables |
-| <a name="output_private_subnets"></a> [private\_subnets](#output\_private\_subnets) | The list of the VPC private subnet IDs |
-| <a name="output_private_subnets_cidr_blocks"></a> [private\_subnets\_cidr\_blocks](#output\_private\_subnets\_cidr\_blocks) | The list of the VPC private subnet CIDRs |
-| <a name="output_public_route_table_ids"></a> [public\_route\_table\_ids](#output\_public\_route\_table\_ids) | The IDs of the public route tables |
-| <a name="output_public_subnets"></a> [public\_subnets](#output\_public\_subnets) | The list of the VPC public subnet IDs |
-| <a name="output_public_subnets_cidr_blocks"></a> [public\_subnets\_cidr\_blocks](#output\_public\_subnets\_cidr\_blocks) | The list of the VPC public subnet CIDRs |
+| <a name="output_private_route_table_ids"></a> [private\_route\_table\_ids](#output\_private\_route\_table\_ids) | The list of IDs of the private route tables |
+| <a name="output_private_subnets"></a> [private\_subnets](#output\_private\_subnets) | The list of IDs of the private subnets |
+| <a name="output_private_subnets_cidr_blocks"></a> [private\_subnets\_cidr\_blocks](#output\_private\_subnets\_cidr\_blocks) | The list of CIDRs of the private subnets |
+| <a name="output_public_route_table_ids"></a> [public\_route\_table\_ids](#output\_public\_route\_table\_ids) | The list of IDs of the public route tables |
+| <a name="output_public_subnets"></a> [public\_subnets](#output\_public\_subnets) | The list of IDs of the public subnets |
+| <a name="output_public_subnets_cidr_blocks"></a> [public\_subnets\_cidr\_blocks](#output\_public\_subnets\_cidr\_blocks) | The list of CIDRs of public subnets |
 | <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | The CIDR block of the VPC |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID of the VPC |
 | <a name="output_vpc_name"></a> [vpc\_name](#output\_vpc\_name) | The name of the VPC |
