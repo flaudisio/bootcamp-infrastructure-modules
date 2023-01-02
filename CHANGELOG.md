@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Modules affected
+
+- `networking/vpc`
+
+### Description
+
+- The lists of database and ElastiCache subnets were added to the outputs of the VPC module.
+
+### Related links
+
+- flaudisio/bootcamp-sre-infrastructure-modules#2
+
 ## v0.0.1 - 2023-01-02
 
 ### New modules
