@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.0.2 - 2023-01-02
+
 ### Modules affected
 
 - `networking/vpc`
