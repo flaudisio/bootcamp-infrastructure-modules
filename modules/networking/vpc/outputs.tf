@@ -1,7 +1,3 @@
-# ------------------------------------------------------------------------------
-# VPC
-# ------------------------------------------------------------------------------
-
 output "vpc_id" {
   description = "The ID of the VPC"
   value       = module.vpc.vpc_id
@@ -32,6 +28,16 @@ output "database_subnets_cidr_blocks" {
   value       = module.vpc.database_subnets_cidr_blocks
 }
 
+output "database_subnet_group" {
+  description = "The ID of the database subnet group"
+  value       = module.vpc.database_subnet_group
+}
+
+output "database_subnet_group_name" {
+  description = "The name of the database subnet group"
+  value       = module.vpc.database_subnet_group_name
+}
+
 output "elasticache_subnets" {
   description = "The list of IDs of the ElastiCache subnets"
   value       = module.vpc.elasticache_subnets
@@ -40,6 +46,16 @@ output "elasticache_subnets" {
 output "elasticache_subnets_cidr_blocks" {
   description = "The list of CIDRs of the ElastiCache subnets"
   value       = module.vpc.elasticache_subnets_cidr_blocks
+}
+
+output "elasticache_subnet_group" {
+  description = "The ID of the ElastiCache subnet group"
+  value       = module.vpc.elasticache_subnet_group
+}
+
+output "elasticache_subnet_group_name" {
+  description = "The name of the ElastiCache subnet group"
+  value       = module.vpc.elasticache_subnet_group_name
 }
 
 output "private_route_table_ids" {

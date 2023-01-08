@@ -40,8 +40,12 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_azs"></a> [azs](#output\_azs) | The list of eligible AZs for provisioning the VPC subnets |
+| <a name="output_database_subnet_group"></a> [database\_subnet\_group](#output\_database\_subnet\_group) | The ID of the database subnet group |
+| <a name="output_database_subnet_group_name"></a> [database\_subnet\_group\_name](#output\_database\_subnet\_group\_name) | The name of the database subnet group |
 | <a name="output_database_subnets"></a> [database\_subnets](#output\_database\_subnets) | The list of IDs of the database subnets |
 | <a name="output_database_subnets_cidr_blocks"></a> [database\_subnets\_cidr\_blocks](#output\_database\_subnets\_cidr\_blocks) | The list of CIDRs of the database subnets |
+| <a name="output_elasticache_subnet_group"></a> [elasticache\_subnet\_group](#output\_elasticache\_subnet\_group) | The ID of the ElastiCache subnet group |
+| <a name="output_elasticache_subnet_group_name"></a> [elasticache\_subnet\_group\_name](#output\_elasticache\_subnet\_group\_name) | The name of the ElastiCache subnet group |
 | <a name="output_elasticache_subnets"></a> [elasticache\_subnets](#output\_elasticache\_subnets) | The list of IDs of the ElastiCache subnets |
 | <a name="output_elasticache_subnets_cidr_blocks"></a> [elasticache\_subnets\_cidr\_blocks](#output\_elasticache\_subnets\_cidr\_blocks) | The list of CIDRs of the ElastiCache subnets |
 | <a name="output_nat_gateway_ids"></a> [nat\_gateway\_ids](#output\_nat\_gateway\_ids) | The IDs of the NAT Gateways |
