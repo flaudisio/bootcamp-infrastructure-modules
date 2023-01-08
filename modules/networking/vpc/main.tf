@@ -85,4 +85,8 @@ module "vpc" {
   # DNS settings to allow using private Route 53 zones
   enable_dns_hostnames = true
   enable_dns_support   = true
+
+  # Subnet groups
+  create_database_subnet_group    = true
+  create_elasticache_subnet_group = true
 }

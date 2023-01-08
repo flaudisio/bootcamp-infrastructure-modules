@@ -5,7 +5,7 @@
 locals {
   tags = {
     environment = var.environment
-    service     = "wireguard"
+    service     = var.instance_name
   }
 }
 
@@ -94,29 +94,7 @@ module "security_group" {
 }
 
 # ------------------------------------------------------------------------------
-# SSM PARAMETERS
-# ------------------------------------------------------------------------------
-
-resource "random_password" "wg_portal_admin" {
-  length      = 32
-  special     = false
-  min_lower   = 8
-  min_upper   = 8
-  min_numeric = 8
-}
-
-resource "aws_ssm_parameter" "wg_portal_admin_password" {
-  name        = format("/%s/wg-portal-admin-password", var.instance_name)
-  description = "WireGuard Portal admin password - ${var.instance_name} instance"
-
-  type  = "SecureString"
-  value = random_password.wg_portal_admin.result
-
-  tags = local.tags
-}
-
-# ------------------------------------------------------------------------------
-# IAM POLICY
+# IAM POLICY - EC2
 # ------------------------------------------------------------------------------
 
 data "aws_iam_policy_document" "this" {
@@ -124,17 +102,15 @@ data "aws_iam_policy_document" "this" {
     actions = [
       "ssm:GetParameter",
     ]
-    resources = [
-      aws_ssm_parameter.wg_portal_admin_password.arn,
-    ]
+    resources = values(aws_ssm_parameter.wg_portal_credentials)[*].arn
   }
 }
 
-module "iam_policy" {
+module "ec2_iam_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "5.9.2"
 
-  name        = var.instance_name
+  name        = format("%s-ec2", var.instance_name)
   description = "Policy for WireGuard instance - ${var.instance_name}"
 
   policy = data.aws_iam_policy_document.this.json
@@ -188,7 +164,8 @@ module "ec2_instance" {
   iam_role_description     = "Role for WireGuard instance - ${var.instance_name}"
 
   iam_role_policies = {
-    instance = module.iam_policy.arn
+    ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+    service   = module.ec2_iam_policy.arn,
   }
 
   volume_tags = local.tags
@@ -213,7 +190,79 @@ resource "aws_eip" "this" {
 }
 
 # ------------------------------------------------------------------------------
-# ROUTE 53 RECORD
+# IAM USER - SMTP
+# ------------------------------------------------------------------------------
+
+data "aws_iam_policy_document" "smtp" {
+  statement {
+    effect    = "Allow"
+    actions   = ["ses:SendRawEmail"]
+    resources = ["*"]
+  }
+}
+
+module "smtp_iam_policy" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  version = "5.9.2"
+
+  name        = format("%s-smtp", var.instance_name)
+  description = "Policy for WireGuard SMTP user - ${var.instance_name}"
+
+  policy = data.aws_iam_policy_document.smtp.json
+
+  tags = local.tags
+}
+
+module "smtp_iam_user" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
+  version = "5.10.0"
+
+  name = format("%s-smtp", var.instance_name)
+
+  force_destroy = true
+
+  create_iam_access_key         = true
+  create_iam_user_login_profile = false
+
+  tags = local.tags
+}
+
+resource "aws_iam_user_policy_attachment" "smtp_user" {
+  user       = module.smtp_iam_user.iam_user_name
+  policy_arn = module.smtp_iam_policy.arn
+}
+
+# ------------------------------------------------------------------------------
+# SSM PARAMETERS - WG PORTAL
+# ------------------------------------------------------------------------------
+
+resource "random_password" "wg_portal_admin" {
+  length      = 32
+  special     = false
+  min_lower   = 8
+  min_upper   = 8
+  min_numeric = 8
+}
+
+resource "aws_ssm_parameter" "wg_portal_credentials" {
+  for_each = {
+    wg-portal-admin-username = format("wg-admin@%s", var.account_route53_zone_name)
+    wg-portal-admin-password = random_password.wg_portal_admin.result
+    wg-portal-email-username = module.smtp_iam_user.iam_access_key_id
+    wg-portal-email-password = module.smtp_iam_user.iam_access_key_ses_smtp_password_v4
+  }
+
+  name        = format("/%s/%s", var.instance_name, each.key)
+  description = "WireGuard Portal credentials"
+
+  type  = "SecureString"
+  value = each.value
+
+  tags = local.tags
+}
+
+# ------------------------------------------------------------------------------
+# ROUTE 53 RECORDS
 # ------------------------------------------------------------------------------
 
 resource "aws_route53_record" "instance_private" {
