@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.1.0 - 2023-01-08
+
 ### New modules
 
 - `account/region-baseline`
