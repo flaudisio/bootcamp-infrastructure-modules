@@ -2,6 +2,11 @@
 # COMMON VARIABLES
 # ------------------------------------------------------------------------------
 
+variable "account_route53_zone_name" {
+  description = "The name of the account's Route 53 zone"
+  type        = string
+}
+
 variable "account_route53_zone_id" {
   description = "The ID of the account's Route 53 zone"
   type        = string

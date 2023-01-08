@@ -33,9 +33,9 @@ output "vpn_public_endpoint_for_clients" {
   value       = format("%s:%s", aws_route53_record.public_endpoint.fqdn, var.wireguard_port)
 }
 
-output "vpn_portal_admin_password_ssm_parameter" {
-  description = "The name of the SSM parameter that stores the VPN public key"
-  value       = aws_ssm_parameter.wg_portal_admin_password.name
+output "vpn_portal_credentials_ssm_parameters" {
+  description = "The SSM parameters that store the VPN portal credentials"
+  value       = values(aws_ssm_parameter.wg_portal_credentials)[*].name
 }
 
 output "vpn_portal_endpoint" {

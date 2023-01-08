@@ -56,21 +56,25 @@ Done! Now you can create VPN peers as you wish.
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_ec2_iam_policy"></a> [ec2\_iam\_policy](#module\_ec2\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
 | <a name="module_ec2_instance"></a> [ec2\_instance](#module\_ec2\_instance) | terraform-aws-modules/ec2-instance/aws | 4.2.1 |
-| <a name="module_iam_policy"></a> [iam\_policy](#module\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
+| <a name="module_smtp_iam_policy"></a> [smtp\_iam\_policy](#module\_smtp\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
+| <a name="module_smtp_iam_user"></a> [smtp\_iam\_user](#module\_smtp\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | 5.10.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [aws_eip.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
+| [aws_iam_user_policy_attachment.smtp_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment) | resource |
 | [aws_key_pair.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
 | [aws_route53_record.instance_private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.public_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_ssm_parameter.wg_portal_admin_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.wg_portal_credentials](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_password.wg_portal_admin](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_iam_policy_document.smtp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
@@ -78,6 +82,7 @@ Done! Now you can create VPN peers as you wish.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_route53_zone_id"></a> [account\_route53\_zone\_id](#input\_account\_route53\_zone\_id) | The ID of the account's Route 53 zone | `string` | n/a | yes |
+| <a name="input_account_route53_zone_name"></a> [account\_route53\_zone\_name](#input\_account\_route53\_zone\_name) | The name of the account's Route 53 zone | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment name | `string` | n/a | yes |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | The type of the EC2 instance | `string` | n/a | yes |
 | <a name="input_public_key"></a> [public\_key](#input\_public\_key) | The SSH public key material to be configured in the EC2 instance | `string` | n/a | yes |
@@ -99,7 +104,7 @@ Done! Now you can create VPN peers as you wish.
 | <a name="output_instance_public_dns"></a> [instance\_public\_dns](#output\_instance\_public\_dns) | The public DNS of the EC2 instance |
 | <a name="output_instance_public_ip"></a> [instance\_public\_ip](#output\_instance\_public\_ip) | The public IP of the EC2 instance |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The ID of the instance's security group |
-| <a name="output_vpn_portal_admin_password_ssm_parameter"></a> [vpn\_portal\_admin\_password\_ssm\_parameter](#output\_vpn\_portal\_admin\_password\_ssm\_parameter) | The name of the SSM parameter that stores the VPN public key |
+| <a name="output_vpn_portal_credentials_ssm_parameters"></a> [vpn\_portal\_credentials\_ssm\_parameters](#output\_vpn\_portal\_credentials\_ssm\_parameters) | The SSM parameters that store the VPN portal credentials |
 | <a name="output_vpn_portal_endpoint"></a> [vpn\_portal\_endpoint](#output\_vpn\_portal\_endpoint) | The WireGuard Portal endpoint for configuring the VPN service and clients |
 | <a name="output_vpn_public_endpoint_for_clients"></a> [vpn\_public\_endpoint\_for\_clients](#output\_vpn\_public\_endpoint\_for\_clients) | The VPN public endpoint for clients. Use it for the initial setup of WG Portal |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
