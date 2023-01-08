@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+### New modules
+
+- `account/region-baseline`
+
+### Modules affected
+
+- `account/baseline`
+- `networking/vpc`
+- `security/wireguard-server`
+
+### Description
+
+- The `account/baseline` module has been renamed to `account/account-baseline`.
+- The `networking/vpc` module now creates and exposes subnet groups for RDS and ElastiCache.
+- The `security/wireguard-server` module now deploys an IAM user and SSM parameters for using SMTP credentials in the
+  WireGuard Portal configuration.
+
+### Related links
+
+- flaudisio/bootcamp-infrastructure-modules#3
+
 ## v0.0.2 - 2023-01-02
 
 ### Modules affected
@@ -14,7 +35,7 @@
 
 ### Related links
 
-- flaudisio/bootcamp-sre-infrastructure-modules#2
+- flaudisio/bootcamp-infrastructure-modules#2
 
 ## v0.0.1 - 2023-01-02
 
@@ -31,4 +52,4 @@
 
 ### Related links
 
-- flaudisio/bootcamp-sre-infrastructure-modules#1
+- flaudisio/bootcamp-infrastructure-modules#1
