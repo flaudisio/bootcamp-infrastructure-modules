@@ -171,12 +171,13 @@ module "ec2_instance" {
   # IAM role
   create_iam_instance_profile = true
 
+  iam_role_name            = format("%s-ec2", local.service_name)
   iam_role_use_name_prefix = false
   iam_role_description     = "Role for WireGuard instance - ${local.service_name}"
 
   iam_role_policies = {
-    ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
-    service   = module.ec2_iam_policy.arn,
+    ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    service   = module.ec2_iam_policy.arn
   }
 
   volume_tags = local.tags
