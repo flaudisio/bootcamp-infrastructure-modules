@@ -31,17 +31,6 @@ variable "public_subnet_id" {
   type        = string
 }
 
-variable "instance_name" {
-  description = "The name of the EC2 instance"
-  type        = string
-  default     = "wireguard"
-
-  validation {
-    condition     = can(regex("^wireguard", var.instance_name))
-    error_message = "The instance name must begin with 'wireguard'."
-  }
-}
-
 variable "instance_type" {
   description = "The type of the EC2 instance"
   type        = string

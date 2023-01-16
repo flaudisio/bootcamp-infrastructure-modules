@@ -1,31 +1,29 @@
-# WireGuard Server
+# WireGuard Server EC2 Instance
 
 ## Setting up WireGuard Portal
 
 After deploying the instance, follow the steps below to access WireGuard Portal and to configure the VPN server and clients.
 
-1. Get the WG Portal admin username from the [related Ansible inventory](https://github.com/flaudisio/bootcamp-sre-ansible-playbooks/tree/main/inventories).
-
-1. Get the WG Portal admin password from SSM Parameter Store. Example using AWS CLI:
+1. Get the WireGuard Portal admin username and password from SSM Parameter Store. Example using AWS CLI:
 
     ```console
-    $ param_name="$( terragrunt output -raw 'vpn_portal_admin_password_ssm_parameter' )"
-    $ aws ssm get-parameter --name "$param_name" --with-decryption --query 'Parameter.Value' --output text
+    $ aws ssm get-parameters-by-path --path '/wireguard' --with-decryption --query 'Parameters[].[Name, Value]'
     ```
 
-1. Login to the WG Portal web GUI. The portal endpoint is exposed by the `vpn_portal_endpoint` output (e.g. https://vpn.dev.example.com).  
-   After logging in, you'll see the following banner:
+1. Login to the Portal web GUI. The portal endpoint is exposed by the `vpn_portal_endpoint` output (e.g. https://vpn.example.com).
 
-    ```plaintext
-    Warning: WireGuard Interface wg0 is not fully configured! Configurations may be incomplete and non functional!
-    ```
+After logging in, you'll see the following banner:
 
-To fix it, keep following the steps below:
+```plaintext
+Warning: WireGuard Interface wg0 is not fully configured! Configurations may be incomplete and non functional!
+```
+
+To fix it, follow the steps below:
 
 1. Go to the **Administration** area and open the configuration are of the `wg0` interface.
 
 1. (Required) Set **Public Endpoint for Clients** to the value exposed by the module's `vpn_public_endpoint_for_clients`
-   output (e.g. `vpn.dev.example.com:51820`).
+   output (e.g. `vpn.example.com:51820`).
 
 1. (Required) Set **MTU** to `0` to avoid the `Key: 'Device.Mtu' Error:Field validation for 'Mtu' failed on the 'lte' tag`
    error.
@@ -34,7 +32,7 @@ To fix it, keep following the steps below:
 
 1. Click the **Save** button.
 
-Done! Now you can create VPN peers as you wish.
+1. Done! Now you can create VPN peers as you wish.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -58,7 +56,7 @@ Done! Now you can create VPN peers as you wish.
 |------|--------|---------|
 | <a name="module_ec2_iam_policy"></a> [ec2\_iam\_policy](#module\_ec2\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
 | <a name="module_ec2_instance"></a> [ec2\_instance](#module\_ec2\_instance) | terraform-aws-modules/ec2-instance/aws | 4.2.1 |
-| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
+| <a name="module_ec2_security_group"></a> [ec2\_security\_group](#module\_ec2\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
 | <a name="module_smtp_iam_policy"></a> [smtp\_iam\_policy](#module\_smtp\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
 | <a name="module_smtp_iam_user"></a> [smtp\_iam\_user](#module\_smtp\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | 5.10.0 |
 
@@ -91,7 +89,6 @@ Done! Now you can create VPN peers as you wish.
 | <a name="input_allow_ssh_from_cidrs"></a> [allow\_ssh\_from\_cidrs](#input\_allow\_ssh\_from\_cidrs) | A list of CIDRs to be allowed to access the SSH port of the instance | `list(string)` | `[]` | no |
 | <a name="input_ami_name"></a> [ami\_name](#input\_ami\_name) | The name of the AMI to be used for the instance | `string` | `"ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20221208"` | no |
 | <a name="input_ami_owner"></a> [ami\_owner](#input\_ami\_owner) | The owner of the AMI to be used for the instance | `string` | `"099720109477"` | no |
-| <a name="input_instance_name"></a> [instance\_name](#input\_instance\_name) | The name of the EC2 instance | `string` | `"wireguard"` | no |
 | <a name="input_wireguard_port"></a> [wireguard\_port](#input\_wireguard\_port) | The port where the WireGuard server will listen to | `number` | `51820` | no |
 
 ## Outputs

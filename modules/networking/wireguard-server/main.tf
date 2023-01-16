@@ -3,9 +3,11 @@
 # ------------------------------------------------------------------------------
 
 locals {
+  service_name = "wireguard"
+
   tags = {
     environment = var.environment
-    service     = var.instance_name
+    service     = local.service_name
   }
 }
 
@@ -38,7 +40,7 @@ data "aws_ami" "ubuntu" {
 # ------------------------------------------------------------------------------
 
 resource "aws_key_pair" "this" {
-  key_name   = var.instance_name
+  key_name   = local.service_name
   public_key = var.public_key
 
   tags = local.tags
@@ -48,12 +50,12 @@ resource "aws_key_pair" "this" {
 # SECURITY GROUP
 # ------------------------------------------------------------------------------
 
-module "security_group" {
+module "ec2_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "4.16.2"
 
-  name        = var.instance_name
-  description = "WireGuard instance - ${var.instance_name}"
+  name        = local.service_name
+  description = "WireGuard instance - ${local.service_name}"
   vpc_id      = var.vpc_id
 
   ingress_with_cidr_blocks = concat(
@@ -66,8 +68,7 @@ module "security_group" {
         cidr_blocks = "0.0.0.0/0"
       },
       {
-        from_port   = 443
-        to_port     = 443
+        rule        = "https-443-tcp"
         protocol    = "tcp"
         description = "WireGuard Portal"
         cidr_blocks = "0.0.0.0/0"
@@ -99,6 +100,15 @@ module "security_group" {
 
 data "aws_iam_policy_document" "this" {
   statement {
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeInstances",
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
     actions = [
       "ssm:GetParameter",
     ]
@@ -110,8 +120,8 @@ module "ec2_iam_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "5.9.2"
 
-  name        = format("%s-ec2", var.instance_name)
-  description = "Policy for WireGuard instance - ${var.instance_name}"
+  name        = format("%s-ec2", local.service_name)
+  description = "Policy for WireGuard instance - ${local.service_name}"
 
   policy = data.aws_iam_policy_document.this.json
 
@@ -126,7 +136,8 @@ locals {
   user_data_file = "${path.module}/templates/user_data.sh.tftpl"
 
   user_data_vars = {
-    environment = var.environment
+    environment  = var.environment
+    service_name = local.service_name
   }
 }
 
@@ -134,14 +145,14 @@ module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "4.2.1"
 
-  name = var.instance_name
+  name = local.service_name
 
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
   key_name                    = aws_key_pair.this.key_name
   subnet_id                   = var.public_subnet_id
-  vpc_security_group_ids      = [module.security_group.security_group_id]
+  vpc_security_group_ids      = [module.ec2_security_group.security_group_id]
   associate_public_ip_address = true
 
   user_data_base64 = base64encode(templatefile(local.user_data_file, local.user_data_vars))
@@ -160,12 +171,13 @@ module "ec2_instance" {
   # IAM role
   create_iam_instance_profile = true
 
+  iam_role_name            = format("%s-ec2", local.service_name)
   iam_role_use_name_prefix = false
-  iam_role_description     = "Role for WireGuard instance - ${var.instance_name}"
+  iam_role_description     = "Role for WireGuard instance - ${local.service_name}"
 
   iam_role_policies = {
-    ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
-    service   = module.ec2_iam_policy.arn,
+    ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    service   = module.ec2_iam_policy.arn
   }
 
   volume_tags = local.tags
@@ -184,7 +196,7 @@ resource "aws_eip" "this" {
   tags = merge(
     local.tags,
     {
-      Name = var.instance_name
+      Name = local.service_name
     }
   )
 }
@@ -205,8 +217,8 @@ module "smtp_iam_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "5.9.2"
 
-  name        = format("%s-smtp", var.instance_name)
-  description = "Policy for WireGuard SMTP user - ${var.instance_name}"
+  name        = format("%s-smtp", local.service_name)
+  description = "Policy for WireGuard SMTP user - ${local.service_name}"
 
   policy = data.aws_iam_policy_document.smtp.json
 
@@ -217,7 +229,7 @@ module "smtp_iam_user" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-user"
   version = "5.10.0"
 
-  name = format("%s-smtp", var.instance_name)
+  name = format("%s-smtp", local.service_name)
 
   force_destroy = true
 
@@ -252,7 +264,7 @@ resource "aws_ssm_parameter" "wg_portal_credentials" {
     wg-portal-email-password = module.smtp_iam_user.iam_access_key_ses_smtp_password_v4
   }
 
-  name        = format("/%s/%s", var.instance_name, each.key)
+  name        = format("/%s/%s", local.service_name, each.key)
   description = "WireGuard Portal credentials"
 
   type  = "SecureString"
@@ -268,7 +280,7 @@ resource "aws_ssm_parameter" "wg_portal_credentials" {
 resource "aws_route53_record" "instance_private" {
   zone_id = var.account_route53_zone_id
 
-  name    = var.instance_name
+  name    = local.service_name
   type    = "A"
   ttl     = 600
   records = [module.ec2_instance.private_ip]

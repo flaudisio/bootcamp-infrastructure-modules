@@ -25,7 +25,7 @@ output "instance_public_ip" {
 
 output "security_group_id" {
   description = "The ID of the instance's security group"
-  value       = module.security_group.security_group_id
+  value       = module.ec2_security_group.security_group_id
 }
 
 output "vpn_public_endpoint_for_clients" {
