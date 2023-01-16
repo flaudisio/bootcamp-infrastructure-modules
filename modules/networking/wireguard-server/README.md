@@ -1,4 +1,4 @@
-# WireGuard Server
+# WireGuard Server EC2 Instance
 
 ## Setting up WireGuard Portal
 
