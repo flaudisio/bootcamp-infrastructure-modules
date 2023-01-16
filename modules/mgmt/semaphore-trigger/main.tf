@@ -1,16 +1,24 @@
 # ------------------------------------------------------------------------------
-# TAGS
+# LOCALS
 # ------------------------------------------------------------------------------
 
 locals {
   service_name = "semaphore-trigger"
 
   eventbridge_rule_name = "${local.service_name}-ec2-instances-running"
+}
 
-  tags = {
-    environment = var.environment
-    service     = local.service_name
-  }
+# ------------------------------------------------------------------------------
+# TAGS
+# ------------------------------------------------------------------------------
+
+module "tags" {
+  source  = "flaudisio/standard-tags/aws"
+  version = "0.1.1"
+
+  environment = var.environment
+  service     = local.service_name
+  owner       = "infra"
 }
 
 # ------------------------------------------------------------------------------
@@ -54,7 +62,7 @@ module "sqs_queue" {
     }
   ]
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -98,7 +106,7 @@ module "eventbridge" {
     ]
   }
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -120,7 +128,7 @@ module "security_group" {
     }
   ]
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -216,5 +224,5 @@ module "lambda_function" {
     }
   }
 
-  tags = local.tags
+  tags = module.tags.tags
 }
