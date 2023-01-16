@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export ENVIRONMENT="${environment}"
+export SERVICE="${service_name}"
+
+curl -m 5 --retry 2 -fL "https://raw.githubusercontent.com/flaudisio/bootcamp-sre-ansible-playbooks/main/_scripts/setup-instance.sh" | bash
