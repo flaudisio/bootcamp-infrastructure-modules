@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.2.0 - 2023-01-15
+
 ### New modules
 
 - `mgmt/semaphore-server`
