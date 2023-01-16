@@ -1,4 +1,4 @@
-# Region Baseline
+# Region Baseline Configuration
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
