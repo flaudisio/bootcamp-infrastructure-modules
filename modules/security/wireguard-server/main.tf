@@ -100,6 +100,15 @@ module "ec2_security_group" {
 
 data "aws_iam_policy_document" "this" {
   statement {
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeInstances",
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
     actions = [
       "ssm:GetParameter",
     ]
@@ -127,7 +136,8 @@ locals {
   user_data_file = "${path.module}/templates/user_data.sh.tftpl"
 
   user_data_vars = {
-    environment = var.environment
+    environment  = var.environment
+    service_name = local.service_name
   }
 }
 
