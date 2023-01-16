@@ -58,7 +58,7 @@ Done! Now you can create VPN peers as you wish.
 |------|--------|---------|
 | <a name="module_ec2_iam_policy"></a> [ec2\_iam\_policy](#module\_ec2\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
 | <a name="module_ec2_instance"></a> [ec2\_instance](#module\_ec2\_instance) | terraform-aws-modules/ec2-instance/aws | 4.2.1 |
-| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
+| <a name="module_ec2_security_group"></a> [ec2\_security\_group](#module\_ec2\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
 | <a name="module_smtp_iam_policy"></a> [smtp\_iam\_policy](#module\_smtp\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
 | <a name="module_smtp_iam_user"></a> [smtp\_iam\_user](#module\_smtp\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | 5.10.0 |
 

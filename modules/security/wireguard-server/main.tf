@@ -50,7 +50,7 @@ resource "aws_key_pair" "this" {
 # SECURITY GROUP
 # ------------------------------------------------------------------------------
 
-module "security_group" {
+module "ec2_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "4.16.2"
 
@@ -68,8 +68,7 @@ module "security_group" {
         cidr_blocks = "0.0.0.0/0"
       },
       {
-        from_port   = 443
-        to_port     = 443
+        rule        = "https-443-tcp"
         protocol    = "tcp"
         description = "WireGuard Portal"
         cidr_blocks = "0.0.0.0/0"
@@ -143,7 +142,7 @@ module "ec2_instance" {
 
   key_name                    = aws_key_pair.this.key_name
   subnet_id                   = var.public_subnet_id
-  vpc_security_group_ids      = [module.security_group.security_group_id]
+  vpc_security_group_ids      = [module.ec2_security_group.security_group_id]
   associate_public_ip_address = true
 
   user_data_base64 = base64encode(templatefile(local.user_data_file, local.user_data_vars))
