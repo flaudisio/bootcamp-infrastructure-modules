@@ -2,13 +2,35 @@
 
 ## Unreleased
 
+### New modules
+
+- `mgmt/semaphore-server`
+- `mgmt/semaphore-trigger`
+- `services/wordpress-site`
+
+### Affected modules
+
+- `account/account-baseline`
+- `networking/vpc`
+- `security/wireguard-server`
+
+### Description
+
+- The `security/wireguard-server` module has been renamed to `networking/wireguard-server`.
+- The `networking/vpc` module now has tags for all deployed resources.
+- The `account/account-baseline` module now enables the account-level S3 public access block feature.
+
+### Related links
+
+- flaudisio/bootcamp-infrastructure-modules#4
+
 ## v0.1.0 - 2023-01-08
 
 ### New modules
 
 - `account/region-baseline`
 
-### Modules affected
+### Affected modules
 
 - `account/baseline`
 - `networking/vpc`
@@ -27,7 +49,7 @@
 
 ## v0.0.2 - 2023-01-02
 
-### Modules affected
+### Affected modules
 
 - `networking/vpc`
 
