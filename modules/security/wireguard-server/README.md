@@ -4,28 +4,26 @@
 
 After deploying the instance, follow the steps below to access WireGuard Portal and to configure the VPN server and clients.
 
-1. Get the WG Portal admin username from the [related Ansible inventory](https://github.com/flaudisio/bootcamp-sre-ansible-playbooks/tree/main/inventories).
-
-1. Get the WG Portal admin password from SSM Parameter Store. Example using AWS CLI:
+1. Get the WireGuard Portal admin username and password from SSM Parameter Store. Example using AWS CLI:
 
     ```console
-    $ param_name="$( terragrunt output -raw 'vpn_portal_admin_password_ssm_parameter' )"
-    $ aws ssm get-parameter --name "$param_name" --with-decryption --query 'Parameter.Value' --output text
+    $ aws ssm get-parameters-by-path --path '/wireguard' --with-decryption --query 'Parameters[].[Name, Value]'
     ```
 
-1. Login to the WG Portal web GUI. The portal endpoint is exposed by the `vpn_portal_endpoint` output (e.g. https://vpn.dev.example.com).  
-   After logging in, you'll see the following banner:
+1. Login to the Portal web GUI. The portal endpoint is exposed by the `vpn_portal_endpoint` output (e.g. https://vpn.example.com).
 
-    ```plaintext
-    Warning: WireGuard Interface wg0 is not fully configured! Configurations may be incomplete and non functional!
-    ```
+After logging in, you'll see the following banner:
 
-To fix it, keep following the steps below:
+```plaintext
+Warning: WireGuard Interface wg0 is not fully configured! Configurations may be incomplete and non functional!
+```
+
+To fix it, follow the steps below:
 
 1. Go to the **Administration** area and open the configuration are of the `wg0` interface.
 
 1. (Required) Set **Public Endpoint for Clients** to the value exposed by the module's `vpn_public_endpoint_for_clients`
-   output (e.g. `vpn.dev.example.com:51820`).
+   output (e.g. `vpn.example.com:51820`).
 
 1. (Required) Set **MTU** to `0` to avoid the `Key: 'Device.Mtu' Error:Field validation for 'Mtu' failed on the 'lte' tag`
    error.
@@ -34,7 +32,7 @@ To fix it, keep following the steps below:
 
 1. Click the **Save** button.
 
-Done! Now you can create VPN peers as you wish.
+1. Done! Now you can create VPN peers as you wish.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
