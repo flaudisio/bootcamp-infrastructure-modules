@@ -23,6 +23,7 @@
 | <a name="module_ec2_iam_policy"></a> [ec2\_iam\_policy](#module\_ec2\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
 | <a name="module_ec2_instance"></a> [ec2\_instance](#module\_ec2\_instance) | terraform-aws-modules/ec2-instance/aws | 4.2.1 |
 | <a name="module_ec2_security_group"></a> [ec2\_security\_group](#module\_ec2\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
+| <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.1.1 |
 
 ## Resources
 

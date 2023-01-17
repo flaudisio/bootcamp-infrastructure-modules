@@ -1,14 +1,22 @@
 # ------------------------------------------------------------------------------
-# TAGS
+# LOCALS
 # ------------------------------------------------------------------------------
 
 locals {
   service_name = "wireguard"
+}
 
-  tags = {
-    environment = var.environment
-    service     = local.service_name
-  }
+# ------------------------------------------------------------------------------
+# TAGS
+# ------------------------------------------------------------------------------
+
+module "tags" {
+  source  = "flaudisio/standard-tags/aws"
+  version = "0.1.1"
+
+  environment = var.environment
+  service     = local.service_name
+  owner       = "infra"
 }
 
 # ------------------------------------------------------------------------------
@@ -43,7 +51,7 @@ resource "aws_key_pair" "this" {
   key_name   = local.service_name
   public_key = var.public_key
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -91,7 +99,7 @@ module "ec2_security_group" {
     },
   ]
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -125,7 +133,7 @@ module "ec2_iam_policy" {
 
   policy = data.aws_iam_policy_document.this.json
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -180,9 +188,9 @@ module "ec2_instance" {
     service   = module.ec2_iam_policy.arn
   }
 
-  volume_tags = local.tags
+  volume_tags = module.tags.tags
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -194,7 +202,7 @@ resource "aws_eip" "this" {
   vpc      = true
 
   tags = merge(
-    local.tags,
+    module.tags.tags,
     {
       Name = local.service_name
     }
@@ -222,7 +230,7 @@ module "smtp_iam_policy" {
 
   policy = data.aws_iam_policy_document.smtp.json
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 module "smtp_iam_user" {
@@ -236,7 +244,7 @@ module "smtp_iam_user" {
   create_iam_access_key         = true
   create_iam_user_login_profile = false
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 resource "aws_iam_user_policy_attachment" "smtp_user" {
@@ -270,7 +278,7 @@ resource "aws_ssm_parameter" "wg_portal_credentials" {
   type  = "SecureString"
   value = each.value
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------

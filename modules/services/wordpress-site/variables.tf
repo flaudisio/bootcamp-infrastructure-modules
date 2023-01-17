@@ -21,6 +21,11 @@ variable "environment" {
 # MODULE VARIABLES
 # ------------------------------------------------------------------------------
 
+variable "owner" {
+  description = "The team that owns this WordPress site"
+  type        = string
+}
+
 variable "vpc_id" {
   description = "The ID of the VPC where the resources will be deployed on"
   type        = string

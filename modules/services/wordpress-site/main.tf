@@ -1,15 +1,4 @@
 # ------------------------------------------------------------------------------
-# TAGS
-# ------------------------------------------------------------------------------
-
-locals {
-  tags = {
-    environment = var.environment
-    service     = var.site_name
-  }
-}
-
-# ------------------------------------------------------------------------------
 # LOCALS
 # ------------------------------------------------------------------------------
 
@@ -18,6 +7,19 @@ locals {
   ec2_name_prefix       = format("%s-ec2", var.site_name)
   db_name_prefix        = format("%s-db", var.site_name)
   memcached_name_prefix = format("%s-memcached", var.site_name)
+}
+
+# ------------------------------------------------------------------------------
+# TAGS
+# ------------------------------------------------------------------------------
+
+module "tags" {
+  source  = "flaudisio/standard-tags/aws"
+  version = "0.1.1"
+
+  environment = var.environment
+  service     = var.site_name
+  owner       = var.owner
 }
 
 # ------------------------------------------------------------------------------
@@ -33,7 +35,7 @@ module "acm" {
 
   wait_for_validation = true
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -57,7 +59,7 @@ module "lb_security_group" {
 
   egress_rules = ["all-all"]
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -118,7 +120,7 @@ module "load_balancer" {
     },
   ]
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -153,7 +155,7 @@ resource "aws_key_pair" "this" {
   key_name   = var.site_name
   public_key = var.ec2_public_key
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -197,7 +199,7 @@ module "asg_iam_policy" {
 
   policy = data.aws_iam_policy_document.asg_instances.json
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -235,7 +237,7 @@ module "asg_security_group" {
 
   egress_rules = ["all-all"]
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -297,7 +299,7 @@ module "asg" {
   tag_specifications = [
     {
       resource_type = "volume"
-      tags          = merge(local.tags, { Name = var.site_name })
+      tags          = merge(module.tags.tags, { Name = var.site_name })
     },
   ]
 
@@ -313,7 +315,7 @@ module "asg" {
     service   = module.asg_iam_policy.arn,
   }
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -346,7 +348,7 @@ module "rds_security_group" {
 
   egress_rules = ["all-all"]
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -399,7 +401,7 @@ module "rds" {
 
   major_engine_version = "10.6"
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -418,7 +420,7 @@ resource "aws_ssm_parameter" "rds_credentials" {
   type  = "SecureString"
   value = each.value
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -451,7 +453,7 @@ module "memcached_security_group" {
 
   egress_rules = ["all-all"]
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -477,7 +479,7 @@ module "memcached" {
 
   family = "memcached1.6"
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------
@@ -498,7 +500,7 @@ module "s3_bucket" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 
-  tags = local.tags
+  tags = module.tags.tags
 }
 
 # ------------------------------------------------------------------------------

@@ -1,15 +1,4 @@
 # ------------------------------------------------------------------------------
-# TAGS
-# ------------------------------------------------------------------------------
-
-locals {
-  tags = {
-    environment = var.environment
-    service     = "vpc"
-  }
-}
-
-# ------------------------------------------------------------------------------
 # LOCALS
 # ------------------------------------------------------------------------------
 
@@ -47,6 +36,19 @@ locals {
     # cidrsubnet(var.cidr, 5, 18), # e.g. 10.0.104.0/21 - reserved for future use
     # cidrsubnet(var.cidr, 5, 19), # e.g. 10.0.112.0/21 - reserved for future use
   ]
+}
+
+# ------------------------------------------------------------------------------
+# TAGS
+# ------------------------------------------------------------------------------
+
+module "tags" {
+  source  = "flaudisio/standard-tags/aws"
+  version = "0.1.1"
+
+  environment = var.environment
+  service     = "core-infra"
+  owner       = "infra"
 }
 
 # ------------------------------------------------------------------------------
@@ -101,5 +103,5 @@ module "vpc" {
   create_database_subnet_group    = true
   create_elasticache_subnet_group = true
 
-  tags = local.tags
+  tags = module.tags.tags
 }
