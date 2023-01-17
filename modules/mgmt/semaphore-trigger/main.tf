@@ -142,7 +142,7 @@ module "lambda_function" {
   function_name = local.service_name
   description   = "Function for triggering Ansible Semaphore tasks"
 
-  handler       = "semaphore_trigger/handler.handle_event"
+  handler       = "semaphore_trigger/app.handler"
   runtime       = "python3.9"
   architectures = ["x86_64"]
 
