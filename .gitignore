@@ -82,6 +82,7 @@ secrets*.tfvars
 ### Compressed Lambda source ###
 
 *.zip
+!dummy.zip
 
 ### Atlantis ###
 
