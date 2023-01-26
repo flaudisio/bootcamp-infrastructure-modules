@@ -244,6 +244,8 @@ module "asg_security_group" {
 # AUTO SCALING
 # ------------------------------------------------------------------------------
 
+data "aws_default_tags" "current" {}
+
 locals {
   user_data_file = "${path.module}/templates/user_data.sh.tftpl"
 
@@ -299,7 +301,7 @@ module "asg" {
   tag_specifications = [
     {
       resource_type = "volume"
-      tags          = merge(module.tags.tags, { Name = var.site_name })
+      tags          = merge(data.aws_default_tags.current.tags, { Name = var.site_name })
     },
   ]
 
