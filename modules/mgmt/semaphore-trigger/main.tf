@@ -113,7 +113,7 @@ module "eventbridge" {
 # SECURITY GROUP
 # ------------------------------------------------------------------------------
 
-module "security_group" {
+module "lambda_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "4.16.2"
 
@@ -151,7 +151,7 @@ module "lambda_function" {
 
   # VPC config
   vpc_subnet_ids         = var.private_subnets
-  vpc_security_group_ids = [module.security_group.security_group_id]
+  vpc_security_group_ids = [module.lambda_security_group.security_group_id]
   attach_network_policy  = true
 
   # This module creates only the function infrastructure, so we use a "dummy" package.
