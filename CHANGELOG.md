@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+### Affected modules
+
+- `mgmt/semaphore-server`
+- `mgmt/semaphore-trigger`
+- `networking/route53-zone`
+- `networking/vpc`
+- `networking/wireguard-server`
+- `services/wordpress-site`
+
+### Description
+
+- Standard tags are now required for all supported resources.
+- The Lambda function handler in `semaphore-trigger` has been changed to `app.handler`.
+- The `wordpress-site` module has been changed to use an EFS filesystem instead of the S3 bucket, as well the application
+  port and health check path.
+
+### Related links
+
+- flaudisio/bootcamp-infrastructure-modules#5
+- flaudisio/bootcamp-infrastructure-modules#6
+- flaudisio/bootcamp-infrastructure-modules#7
+
 ## v0.2.0 - 2023-01-15
 
 ### New modules
