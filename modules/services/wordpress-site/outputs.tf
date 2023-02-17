@@ -54,10 +54,10 @@ output "memcached_endpoint" {
 }
 
 # ------------------------------------------------------------------------------
-# S3
+# EFS
 # ------------------------------------------------------------------------------
 
-output "s3_bucket_name" {
-  description = "The name of the S3 bucket"
-  value       = module.s3_bucket.s3_bucket_id
+output "efs_endpoint" {
+  description = "The endpoint of the provisioned EFS file system"
+  value       = aws_route53_record.efs.fqdn
 }
