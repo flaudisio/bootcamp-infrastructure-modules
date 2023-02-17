@@ -398,13 +398,14 @@ module "rds" {
 }
 
 # ------------------------------------------------------------------------------
-# SSM PARAMETERS - RDS
+# SSM PARAMETERS - RDS CREDENTIALS
 # ------------------------------------------------------------------------------
 
 resource "aws_ssm_parameter" "rds_credentials" {
   for_each = {
-    db-username = module.rds.db_instance_username
-    db-password = module.rds.db_instance_password
+    db-name = module.rds.db_instance_name
+    db-user = module.rds.db_instance_username
+    db-pass = module.rds.db_instance_password
   }
 
   name        = format("/wordpress/%s/%s", var.site_name, each.key)
