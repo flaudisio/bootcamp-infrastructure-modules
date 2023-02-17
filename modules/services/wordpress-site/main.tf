@@ -304,8 +304,8 @@ module "asg" {
   iam_role_description     = "Role for WordPress EC2 instances - ${var.site_name}"
 
   iam_role_policies = {
-    ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
-    service   = module.asg_iam_policy.arn,
+    ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    service   = module.asg_iam_policy.arn
   }
 
   tags = module.tags.tags
