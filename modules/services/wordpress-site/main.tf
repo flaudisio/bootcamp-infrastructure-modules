@@ -105,13 +105,13 @@ module "load_balancer" {
     {
       name             = local.ec2_name_prefix
       backend_protocol = "HTTP"
-      backend_port     = 80
+      backend_port     = 8080
       target_type      = "instance"
       health_check = {
         enabled             = true
         interval            = 30
-        path                = "/health" # TODO: update to WordPress' status page e.g. '/status'
-        port                = 80
+        path                = "/metrics"
+        port                = 8080
         healthy_threshold   = 2
         unhealthy_threshold = 3
         timeout             = 6
@@ -207,7 +207,7 @@ module "asg_security_group" {
 
   ingress_with_source_security_group_id = [
     {
-      rule                     = "http-80-tcp"
+      rule                     = "http-8080-tcp"
       description              = "HTTP from load balancer"
       source_security_group_id = module.lb_security_group.security_group_id
     },
@@ -215,7 +215,7 @@ module "asg_security_group" {
 
   ingress_with_cidr_blocks = var.allow_vpc_access ? [
     {
-      rule        = "http-80-tcp"
+      rule        = "http-8080-tcp"
       description = "HTTP from VPC"
       cidr_blocks = var.vpc_cidr_block
     },
