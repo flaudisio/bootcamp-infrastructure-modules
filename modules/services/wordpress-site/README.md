@@ -22,13 +22,14 @@
 | <a name="module_asg"></a> [asg](#module\_asg) | terraform-aws-modules/autoscaling/aws | 6.5.3 |
 | <a name="module_asg_iam_policy"></a> [asg\_iam\_policy](#module\_asg\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.9.2 |
 | <a name="module_asg_security_group"></a> [asg\_security\_group](#module\_asg\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
+| <a name="module_efs"></a> [efs](#module\_efs) | terraform-aws-modules/efs/aws | 1.1.1 |
+| <a name="module_efs_security_group"></a> [efs\_security\_group](#module\_efs\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
 | <a name="module_lb_security_group"></a> [lb\_security\_group](#module\_lb\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
 | <a name="module_load_balancer"></a> [load\_balancer](#module\_load\_balancer) | terraform-aws-modules/alb/aws | 8.2.1 |
 | <a name="module_memcached"></a> [memcached](#module\_memcached) | flaudisio/elasticache/aws//modules/memcached | 0.1.1 |
 | <a name="module_memcached_security_group"></a> [memcached\_security\_group](#module\_memcached\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
 | <a name="module_rds"></a> [rds](#module\_rds) | terraform-aws-modules/rds/aws | 5.2.3 |
 | <a name="module_rds_security_group"></a> [rds\_security\_group](#module\_rds\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
-| <a name="module_s3_bucket"></a> [s3\_bucket](#module\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | 3.6.0 |
 | <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.1.1 |
 
 ## Resources
@@ -36,11 +37,13 @@
 | Name | Type |
 |------|------|
 | [aws_key_pair.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
+| [aws_route53_record.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.load_balancer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.memcached](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.rds](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_ssm_parameter.rds_credentials](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ami.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_default_tags.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags) | data source |
 | [aws_iam_policy_document.asg_instances](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
@@ -83,8 +86,8 @@
 | <a name="output_asg_name"></a> [asg\_name](#output\_asg\_name) | The name of the Auto Scaling Group |
 | <a name="output_db_address"></a> [db\_address](#output\_db\_address) | The address of the database instance |
 | <a name="output_db_endpoint"></a> [db\_endpoint](#output\_db\_endpoint) | The endpoint of the database instance |
+| <a name="output_efs_endpoint"></a> [efs\_endpoint](#output\_efs\_endpoint) | The endpoint of the provisioned EFS file system |
 | <a name="output_lb_dns_name"></a> [lb\_dns\_name](#output\_lb\_dns\_name) | The DNS name of the load balancer |
 | <a name="output_memcached_address"></a> [memcached\_address](#output\_memcached\_address) | The DNS name of the Memcached cluster without the port appended |
 | <a name="output_memcached_endpoint"></a> [memcached\_endpoint](#output\_memcached\_endpoint) | The endpoint of the Memcached cluster |
-| <a name="output_s3_bucket_name"></a> [s3\_bucket\_name](#output\_s3\_bucket\_name) | The name of the S3 bucket |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

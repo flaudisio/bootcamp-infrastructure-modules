@@ -6,6 +6,7 @@ locals {
   lb_name_prefix        = format("%s-lb", var.site_name)
   ec2_name_prefix       = format("%s-ec2", var.site_name)
   db_name_prefix        = format("%s-db", var.site_name)
+  efs_name_prefix       = format("%s-efs", var.site_name)
   memcached_name_prefix = format("%s-memcached", var.site_name)
 }
 
@@ -104,13 +105,13 @@ module "load_balancer" {
     {
       name             = local.ec2_name_prefix
       backend_protocol = "HTTP"
-      backend_port     = 80
+      backend_port     = 8080
       target_type      = "instance"
       health_check = {
         enabled             = true
         interval            = 30
-        path                = "/health" # TODO: update to WordPress' status page e.g. '/status'
-        port                = 80
+        path                = "/metrics"
+        port                = 8080
         healthy_threshold   = 2
         unhealthy_threshold = 3
         timeout             = 6
@@ -174,16 +175,6 @@ data "aws_iam_policy_document" "asg_instances" {
   statement {
     effect = "Allow"
     actions = [
-      "s3:*Object",
-    ]
-    resources = [
-      "${module.s3_bucket.s3_bucket_arn}/*",
-    ]
-  }
-
-  statement {
-    effect = "Allow"
-    actions = [
       "ssm:GetParameter",
     ]
     resources = values(aws_ssm_parameter.rds_credentials)[*].arn
@@ -216,7 +207,7 @@ module "asg_security_group" {
 
   ingress_with_source_security_group_id = [
     {
-      rule                     = "http-80-tcp"
+      rule                     = "http-8080-tcp"
       description              = "HTTP from load balancer"
       source_security_group_id = module.lb_security_group.security_group_id
     },
@@ -224,7 +215,7 @@ module "asg_security_group" {
 
   ingress_with_cidr_blocks = var.allow_vpc_access ? [
     {
-      rule        = "http-80-tcp"
+      rule        = "http-8080-tcp"
       description = "HTTP from VPC"
       cidr_blocks = var.vpc_cidr_block
     },
@@ -243,6 +234,8 @@ module "asg_security_group" {
 # ------------------------------------------------------------------------------
 # AUTO SCALING
 # ------------------------------------------------------------------------------
+
+data "aws_default_tags" "current" {}
 
 locals {
   user_data_file = "${path.module}/templates/user_data.sh.tftpl"
@@ -299,7 +292,7 @@ module "asg" {
   tag_specifications = [
     {
       resource_type = "volume"
-      tags          = merge(module.tags.tags, { Name = var.site_name })
+      tags          = merge(data.aws_default_tags.current.tags, { Name = var.site_name })
     },
   ]
 
@@ -405,13 +398,14 @@ module "rds" {
 }
 
 # ------------------------------------------------------------------------------
-# SSM PARAMETERS - RDS
+# SSM PARAMETERS - RDS CREDENTIALS
 # ------------------------------------------------------------------------------
 
 resource "aws_ssm_parameter" "rds_credentials" {
   for_each = {
-    db-username = module.rds.db_instance_username
-    db-password = module.rds.db_instance_password
+    db-name = module.rds.db_instance_name
+    db-user = module.rds.db_instance_username
+    db-pass = module.rds.db_instance_password
   }
 
   name        = format("/wordpress/%s/%s", var.site_name, each.key)
@@ -483,22 +477,71 @@ module "memcached" {
 }
 
 # ------------------------------------------------------------------------------
-# S3 BUCKET
+# SECURITY GROUP - EFS
 # ------------------------------------------------------------------------------
 
-module "s3_bucket" {
-  source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.6.0"
+module "efs_security_group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "4.16.2"
 
-  bucket = format("%s-static-files-%s", var.site_name, var.environment)
+  name        = local.efs_name_prefix
+  description = format("WordPress - %s - EFS", var.site_name)
+  vpc_id      = var.vpc_id
 
-  # Allow deletion of non-empty bucket
-  force_destroy = true
+  ingress_with_source_security_group_id = [
+    {
+      rule                     = "nfs-tcp"
+      description              = "Access from EC2 instances"
+      source_security_group_id = module.asg_security_group.security_group_id
+    },
+  ]
 
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
+  ingress_with_cidr_blocks = var.allow_vpc_access ? [
+    {
+      rule        = "nfs-tcp"
+      description = "Access from VPC"
+      cidr_blocks = var.vpc_cidr_block
+    },
+  ] : []
+
+  egress_rules = ["all-all"]
+
+  tags = module.tags.tags
+}
+
+# ------------------------------------------------------------------------------
+# EFS
+# ------------------------------------------------------------------------------
+
+module "efs" {
+  source  = "terraform-aws-modules/efs/aws"
+  version = "1.1.1"
+
+  name = var.site_name
+
+  encrypted        = true
+  performance_mode = "generalPurpose"
+  throughput_mode  = "bursting"
+
+  # Avoid creating the module's default "deny non-secure transport" policy statement
+  # (ref: https://github.com/terraform-aws-modules/terraform-aws-efs/blob/v1.1.1/main.tf#L82)
+  # Required for the standard NFS client on Ubuntu
+  attach_policy = false
+
+  lifecycle_policy = {
+    transition_to_ia                    = "AFTER_30_DAYS"
+    transition_to_primary_storage_class = "AFTER_1_ACCESS"
+  }
+
+  create_security_group = false
+
+  mount_targets = {
+    for subnet in var.private_subnets :
+    subnet => {
+      subnet_id       = subnet
+      security_groups = [module.efs_security_group.security_group_id]
+    }
+  }
 
   tags = module.tags.tags
 }
@@ -536,4 +579,13 @@ resource "aws_route53_record" "memcached" {
   type    = "CNAME"
   ttl     = 300
   records = [module.memcached.cluster_address]
+}
+
+resource "aws_route53_record" "efs" {
+  zone_id = var.account_route53_zone_id
+
+  name    = local.efs_name_prefix
+  type    = "CNAME"
+  ttl     = 300
+  records = [module.efs.dns_name]
 }
