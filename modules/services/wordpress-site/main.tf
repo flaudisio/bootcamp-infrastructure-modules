@@ -241,8 +241,8 @@ locals {
   user_data_file = "${path.module}/templates/user_data.sh.tftpl"
 
   user_data_vars = {
-    environment  = var.environment
-    service_name = var.site_name
+    environment = var.environment
+    service     = var.site_name
   }
 }
 
