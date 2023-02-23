@@ -54,6 +54,7 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_asg_name"></a> [asg\_name](#output\_asg\_name) | The name of the Auto Scaling Group |
+| <a name="output_asg_security_group_id"></a> [asg\_security\_group\_id](#output\_asg\_security\_group\_id) | The ID of the security group attached to the EC2 instances |
 | <a name="output_timestream_database_arn"></a> [timestream\_database\_arn](#output\_timestream\_database\_arn) | The ARN of the Timestream database |
 | <a name="output_timestream_database_name"></a> [timestream\_database\_name](#output\_timestream\_database\_name) | The name of the Timestream database |
 | <a name="output_timestream_table_arn"></a> [timestream\_table\_arn](#output\_timestream\_table\_arn) | The ARN of the Timestream table |

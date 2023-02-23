@@ -7,6 +7,11 @@ output "asg_name" {
   value       = module.asg.autoscaling_group_name
 }
 
+output "asg_security_group_id" {
+  description = "The ID of the security group attached to the EC2 instances"
+  value       = module.asg_security_group.security_group_id
+}
+
 # ------------------------------------------------------------------------------
 # TIMESTREAM
 # ------------------------------------------------------------------------------
