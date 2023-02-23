@@ -87,12 +87,7 @@ module "ec2_security_group" {
     ]
   )
 
-  egress_with_cidr_blocks = [
-    {
-      rule        = "all-all"
-      description = "Allow all"
-    },
-  ]
+  egress_rules = ["all-all"]
 
   tags = module.tags.tags
 }

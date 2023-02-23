@@ -121,12 +121,7 @@ module "lambda_security_group" {
   description = "Semaphore Trigger function - ${local.service_name}"
   vpc_id      = var.vpc_id
 
-  egress_with_cidr_blocks = [
-    {
-      rule        = "all-all"
-      description = "Allow all"
-    }
-  ]
+  egress_rules = ["all-all"]
 
   tags = module.tags.tags
 }
