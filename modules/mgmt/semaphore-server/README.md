@@ -48,7 +48,7 @@
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The CIDR block of the VPC where the resources will be deployed on | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC where the resources will be deployed on | `string` | n/a | yes |
 | <a name="input_allow_ssh_from_cidrs"></a> [allow\_ssh\_from\_cidrs](#input\_allow\_ssh\_from\_cidrs) | A list of CIDRs to be allowed to access the SSH port of the instance | `list(string)` | `[]` | no |
-| <a name="input_ami_name"></a> [ami\_name](#input\_ami\_name) | The name of the AMI to be used for the instance | `string` | `"ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20221208"` | no |
+| <a name="input_ami_name"></a> [ami\_name](#input\_ami\_name) | The name of the AMI to be used for the instance | `string` | `"ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20230213"` | no |
 | <a name="input_ami_owner"></a> [ami\_owner](#input\_ami\_owner) | The owner of the AMI to be used for the instance | `string` | `"099720109477"` | no |
 
 ## Outputs

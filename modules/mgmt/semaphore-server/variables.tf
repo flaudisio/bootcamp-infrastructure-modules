@@ -39,7 +39,7 @@ variable "instance_type" {
 variable "ami_name" {
   description = "The name of the AMI to be used for the instance"
   type        = string
-  default     = "ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20221208"
+  default     = "ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20230213"
 }
 
 variable "ami_owner" {
