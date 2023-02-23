@@ -63,7 +63,7 @@ module "ec2_security_group" {
   version = "4.16.2"
 
   name        = local.service_name
-  description = "WireGuard instance - ${local.service_name}"
+  description = "WireGuard - EC2 instance - ${local.service_name}"
   vpc_id      = var.vpc_id
 
   ingress_with_cidr_blocks = concat(
@@ -124,7 +124,7 @@ module "ec2_iam_policy" {
   version = "5.9.2"
 
   name        = format("%s-ec2", local.service_name)
-  description = "Policy for WireGuard instance - ${local.service_name}"
+  description = "WireGuard - EC2 instance - ${local.service_name}"
 
   policy = data.aws_iam_policy_document.this.json
 
@@ -176,7 +176,7 @@ module "ec2_instance" {
 
   iam_role_name            = format("%s-ec2", local.service_name)
   iam_role_use_name_prefix = false
-  iam_role_description     = "Role for WireGuard instance - ${local.service_name}"
+  iam_role_description     = "WireGuard - EC2 instance - ${local.service_name}"
 
   iam_role_policies = {
     ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
@@ -221,7 +221,7 @@ module "smtp_iam_policy" {
   version = "5.9.2"
 
   name        = format("%s-smtp", local.service_name)
-  description = "Policy for WireGuard SMTP user - ${local.service_name}"
+  description = "WireGuard - SMTP user - ${local.service_name}"
 
   policy = data.aws_iam_policy_document.smtp.json
 
@@ -268,7 +268,7 @@ resource "aws_ssm_parameter" "wg_portal_credentials" {
   }
 
   name        = format("/%s/%s", local.service_name, each.key)
-  description = "WireGuard Portal credentials"
+  description = "WireGuard - WG Portal credentials - ${local.service_name}"
 
   type  = "SecureString"
   value = each.value

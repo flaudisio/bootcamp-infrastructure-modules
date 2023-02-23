@@ -48,7 +48,7 @@ module "lb_security_group" {
   version = "4.16.2"
 
   name        = local.lb_name_prefix
-  description = format("WordPress - %s - Load balancer", var.site_name)
+  description = "WordPress - Load balancer - ${var.site_name}"
   vpc_id      = var.vpc_id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
@@ -186,7 +186,7 @@ module "asg_iam_policy" {
   version = "5.9.2"
 
   name        = local.ec2_name_prefix
-  description = "Policy for WordPress EC2 instances - ${var.site_name}"
+  description = "WordPress - EC2 instances - ${var.site_name}"
 
   policy = data.aws_iam_policy_document.asg_instances.json
 
@@ -202,7 +202,7 @@ module "asg_security_group" {
   version = "4.16.2"
 
   name        = local.ec2_name_prefix
-  description = format("WordPress - %s - EC2 instances", var.site_name)
+  description = "WordPress - EC2 instances - ${var.site_name}"
   vpc_id      = var.vpc_id
 
   ingress_with_source_security_group_id = [
@@ -301,7 +301,7 @@ module "asg" {
 
   iam_role_name            = local.ec2_name_prefix
   iam_role_use_name_prefix = false
-  iam_role_description     = "Role for WordPress EC2 instances - ${var.site_name}"
+  iam_role_description     = "WordPress - EC2 instances - ${var.site_name}"
 
   iam_role_policies = {
     ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
@@ -320,7 +320,7 @@ module "rds_security_group" {
   version = "4.16.2"
 
   name        = local.db_name_prefix
-  description = format("WordPress - %s - RDS", var.site_name)
+  description = "WordPress - RDS - ${var.site_name}"
   vpc_id      = var.vpc_id
 
   ingress_with_source_security_group_id = [
@@ -409,7 +409,7 @@ resource "aws_ssm_parameter" "rds_credentials" {
   }
 
   name        = format("/wordpress/%s/%s", var.site_name, each.key)
-  description = "WordPress - ${var.site_name} - database credentials"
+  description = "WordPress - RDS credentials - ${var.site_name}"
 
   type  = "SecureString"
   value = each.value
@@ -426,7 +426,7 @@ module "memcached_security_group" {
   version = "4.16.2"
 
   name        = local.memcached_name_prefix
-  description = format("WordPress - %s - Memcached", var.site_name)
+  description = "WordPress - Memcached - ${var.site_name}"
   vpc_id      = var.vpc_id
 
   ingress_with_source_security_group_id = [
@@ -485,7 +485,7 @@ module "efs_security_group" {
   version = "4.16.2"
 
   name        = local.efs_name_prefix
-  description = format("WordPress - %s - EFS", var.site_name)
+  description = "WordPress - EFS - ${var.site_name}"
   vpc_id      = var.vpc_id
 
   ingress_with_source_security_group_id = [
