@@ -32,26 +32,30 @@ variable "allow_vpc_access" {
   default     = false
 }
 
-variable "container_image" {
-  description = "Docker image to run the Prometheus containers"
-  type        = string
-  default     = "prom/prometheus:2.37.6"
-}
-
-variable "container_count" {
-  description = "The number of Prometheus containers to run"
+variable "instance_count" {
+  description = "The number of EC2 instances to launch"
   type        = number
   default     = 1
 }
 
-variable "ecs_task_cpu" {
-  description = "The ECS task CPU"
-  type        = number
-  default     = 256
+variable "instance_type" {
+  description = "The type of the EC2 instances"
+  type        = string
 }
 
-variable "ecs_task_memory" {
-  description = "The ECS task memory"
-  type        = number
-  default     = 512
+variable "ami_name" {
+  description = "The name of the AMI used to deploy the EC2 instances"
+  type        = string
+  default     = "ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20230213"
+}
+
+variable "ami_owner" {
+  description = "The owner of the AMI used to deploy the EC2 instances"
+  type        = string
+  default     = "099720109477" # Canonical
+}
+
+variable "public_key" {
+  description = "The SSH public key material to be configured in EC2 instances"
+  type        = string
 }
