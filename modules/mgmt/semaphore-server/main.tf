@@ -23,7 +23,7 @@ module "tags" {
 # AMI
 # ------------------------------------------------------------------------------
 
-data "aws_ami" "ubuntu" {
+data "aws_ami" "selected" {
   most_recent = true
   owners      = [var.ami_owner]
 
@@ -39,7 +39,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "architecture"
-    values = ["x86_64"]
+    values = [var.ami_architecture]
   }
 }
 
@@ -192,7 +192,7 @@ module "ec2_instance" {
 
   name = local.service_name
 
-  ami           = data.aws_ami.ubuntu.id
+  ami           = data.aws_ami.selected.id
   instance_type = var.instance_type
 
   key_name                    = aws_key_pair.this.key_name

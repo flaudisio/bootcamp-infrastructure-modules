@@ -37,15 +37,21 @@ variable "instance_type" {
 }
 
 variable "ami_name" {
-  description = "The name of the AMI to be used for the instance"
+  description = "The name of the AMI used to deploy the EC2 instances"
   type        = string
-  default     = "ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20230213"
+  default     = "ubuntu-base-22.04-*"
 }
 
 variable "ami_owner" {
-  description = "The owner of the AMI to be used for the instance"
+  description = "The owner of the AMI used to deploy the EC2 instances"
   type        = string
-  default     = "099720109477" # Canonical
+  default     = "self"
+}
+
+variable "ami_architecture" {
+  description = "The architecture of the AMI used to deploy the EC2 instances"
+  type        = string
+  default     = "x86_64"
 }
 
 variable "public_key" {
