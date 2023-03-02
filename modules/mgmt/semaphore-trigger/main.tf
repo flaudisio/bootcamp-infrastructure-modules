@@ -117,8 +117,8 @@ module "lambda_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "4.16.2"
 
-  name        = local.service_name
-  description = "Semaphore Trigger function - ${local.service_name}"
+  name        = format("%s-lambda", local.service_name)
+  description = "Semaphore Trigger - Lambda - ${local.service_name}"
   vpc_id      = var.vpc_id
 
   egress_rules = ["all-all"]
@@ -194,7 +194,7 @@ module "lambda_function" {
 
   # IAM role and policy
   role_name        = format("%s-function", local.service_name)
-  role_description = "Role for ${local.service_name} Lambda function"
+  role_description = "Semaphore Trigger - Lambda - ${local.service_name}"
 
   attach_policy_statements = true
 
