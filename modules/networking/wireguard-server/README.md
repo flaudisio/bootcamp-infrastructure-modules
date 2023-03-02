@@ -91,6 +91,7 @@ To fix it, follow the steps below:
 | <a name="input_ami_architecture"></a> [ami\_architecture](#input\_ami\_architecture) | The architecture of the AMI used to deploy the EC2 instances | `string` | `"arm64"` | no |
 | <a name="input_ami_name"></a> [ami\_name](#input\_ami\_name) | The name of the AMI used to deploy the EC2 instances | `string` | `"ubuntu-base-22.04-*"` | no |
 | <a name="input_ami_owner"></a> [ami\_owner](#input\_ami\_owner) | The owner of the AMI used to deploy the EC2 instances | `string` | `"self"` | no |
+| <a name="input_attach_security_groups"></a> [attach\_security\_groups](#input\_attach\_security\_groups) | A list of security group IDs to be attached to the instance | `list(string)` | `[]` | no |
 | <a name="input_wireguard_port"></a> [wireguard\_port](#input\_wireguard\_port) | The port where the WireGuard server will listen to | `number` | `51820` | no |
 
 ## Outputs

@@ -31,6 +31,18 @@ variable "public_subnet_id" {
   type        = string
 }
 
+variable "attach_security_groups" {
+  description = "A list of security group IDs to be attached to the instance"
+  type        = list(string)
+  default     = []
+}
+
+variable "allow_ssh_from_cidrs" {
+  description = "A list of CIDRs to be allowed to access the SSH port of the instance"
+  type        = list(string)
+  default     = []
+}
+
 variable "instance_type" {
   description = "The type of the EC2 instance"
   type        = string
@@ -68,10 +80,4 @@ variable "wireguard_port" {
   description = "The port where the WireGuard server will listen to"
   type        = number
   default     = 51820
-}
-
-variable "allow_ssh_from_cidrs" {
-  description = "A list of CIDRs to be allowed to access the SSH port of the instance"
-  type        = list(string)
-  default     = []
 }

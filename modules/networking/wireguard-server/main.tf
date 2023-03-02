@@ -155,7 +155,7 @@ module "ec2_instance" {
 
   key_name                    = aws_key_pair.this.key_name
   subnet_id                   = var.public_subnet_id
-  vpc_security_group_ids      = [module.ec2_security_group.security_group_id]
+  vpc_security_group_ids      = concat([module.ec2_security_group.security_group_id], var.attach_security_groups)
   associate_public_ip_address = true
 
   user_data_base64 = base64encode(templatefile(local.user_data_file, local.user_data_vars))
