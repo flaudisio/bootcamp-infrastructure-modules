@@ -70,3 +70,9 @@ variable "public_key" {
   description = "The SSH public key material to be configured in the EC2 instance"
   type        = string
 }
+
+variable "backup_bucket" {
+  description = "The name of an S3 bucket to be used to initialize the Semaphore database from a backup file"
+  type        = string
+  default     = null
+}

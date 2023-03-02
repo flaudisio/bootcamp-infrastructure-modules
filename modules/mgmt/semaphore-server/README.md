@@ -52,6 +52,7 @@
 | <a name="input_ami_name"></a> [ami\_name](#input\_ami\_name) | The name of the AMI used to deploy the EC2 instances | `string` | `"ubuntu-base-22.04-*"` | no |
 | <a name="input_ami_owner"></a> [ami\_owner](#input\_ami\_owner) | The owner of the AMI used to deploy the EC2 instances | `string` | `"self"` | no |
 | <a name="input_attach_security_groups"></a> [attach\_security\_groups](#input\_attach\_security\_groups) | A list security groups to be attached to the instance | `list(string)` | `[]` | no |
+| <a name="input_backup_bucket"></a> [backup\_bucket](#input\_backup\_bucket) | The name of an S3 bucket to be used to initialize the Semaphore database from a backup file | `string` | `null` | no |
 
 ## Outputs
 

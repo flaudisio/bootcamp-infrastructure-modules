@@ -160,6 +160,23 @@ data "aws_iam_policy_document" "this" {
       "arn:aws:ssm:*:*:parameter/wireguard/*",
     ]
   }
+
+  dynamic "statement" {
+    for_each = var.backup_bucket != null ? [true] : []
+
+    content {
+      effect = "Allow"
+      actions = [
+        "s3:ListBucket",
+        "s3:GetObject*",
+        "s3:PutObject*",
+      ]
+      resources = [
+        "arn:aws:s3:::${var.backup_bucket}",
+        "arn:aws:s3:::${var.backup_bucket}/*",
+      ]
+    }
+  }
 }
 
 module "ec2_iam_policy" {
