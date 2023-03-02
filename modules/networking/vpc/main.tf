@@ -5,6 +5,8 @@
 locals {
   vpc_name = var.environment
 
+  default_resources_name = format("%s-default", local.vpc_name)
+
   public_subnet_cidrs = [
     cidrsubnet(var.cidr, 5, 0), # e.g. 10.0.0.0/21
     cidrsubnet(var.cidr, 5, 1), # e.g. 10.0.8.0/21
@@ -94,6 +96,16 @@ module "vpc" {
   enable_nat_gateway     = true
   single_nat_gateway     = var.single_nat_gateway
   one_nat_gateway_per_az = var.one_nat_gateway_per_az
+
+  # Default resources
+  manage_default_security_group = true
+  manage_default_route_table    = true
+  manage_default_network_acl    = true
+  manage_default_vpc            = false
+
+  default_security_group_name = local.default_resources_name
+  default_route_table_name    = local.default_resources_name
+  default_network_acl_name    = local.default_resources_name
 
   # DNS settings to allow using private Route 53 zones
   enable_dns_hostnames = true
