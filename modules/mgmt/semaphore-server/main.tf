@@ -62,29 +62,30 @@ module "ec2_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "4.16.2"
 
-  name        = local.service_name
-  description = "Semaphore instance - ${local.service_name}"
+  name        = format("%s-ec2", local.service_name)
+  description = "Semaphore - EC2 instance - ${local.service_name}"
   vpc_id      = var.vpc_id
 
   ingress_with_cidr_blocks = concat(
     [
       {
         rule        = "http-80-tcp"
+        description = "HTTP"
         cidr_blocks = var.vpc_cidr_block
       },
       {
         rule        = "https-443-tcp"
+        description = "HTTPS"
         cidr_blocks = var.vpc_cidr_block
       },
     ],
-    [
-      for cidr in var.allow_ssh_from_cidrs :
+    var.allow_ssh_from_vpc ? [
       {
         rule        = "ssh-tcp"
-        description = "SSH from allowed CIDR"
-        cidr_blocks = cidr
-      }
-    ]
+        description = "SSH from VPC"
+        cidr_blocks = var.vpc_cidr_block
+      },
+    ] : []
   )
 
   egress_rules = ["all-all"]
@@ -121,7 +122,7 @@ resource "aws_ssm_parameter" "semaphore_credentials" {
   }
 
   name        = format("/%s/%s", local.service_name, each.key)
-  description = "Semaphore credentials"
+  description = "Semaphore - App credentials - ${local.service_name}"
 
   type  = "SecureString"
   value = each.value
@@ -159,6 +160,23 @@ data "aws_iam_policy_document" "this" {
       "arn:aws:ssm:*:*:parameter/wireguard/*",
     ]
   }
+
+  dynamic "statement" {
+    for_each = var.backup_bucket != null ? [true] : []
+
+    content {
+      effect = "Allow"
+      actions = [
+        "s3:ListBucket",
+        "s3:GetObject*",
+        "s3:PutObject*",
+      ]
+      resources = [
+        "arn:aws:s3:::${var.backup_bucket}",
+        "arn:aws:s3:::${var.backup_bucket}/*",
+      ]
+    }
+  }
 }
 
 module "ec2_iam_policy" {
@@ -166,7 +184,7 @@ module "ec2_iam_policy" {
   version = "5.9.2"
 
   name        = format("%s-ec2", local.service_name)
-  description = "Policy for Semaphore instance - ${local.service_name}"
+  description = "Semaphore - EC2 instance - ${local.service_name}"
 
   policy = data.aws_iam_policy_document.this.json
 
@@ -197,7 +215,7 @@ module "ec2_instance" {
 
   key_name                    = aws_key_pair.this.key_name
   subnet_id                   = var.private_subnet_id
-  vpc_security_group_ids      = [module.ec2_security_group.security_group_id]
+  vpc_security_group_ids      = concat([module.ec2_security_group.security_group_id], var.attach_security_groups)
   associate_public_ip_address = false
 
   user_data_base64 = base64encode(templatefile(local.user_data_file, local.user_data_vars))
@@ -218,7 +236,7 @@ module "ec2_instance" {
 
   iam_role_name            = format("%s-ec2", local.service_name)
   iam_role_use_name_prefix = false
-  iam_role_description     = "Role for Semaphore instance - ${local.service_name}"
+  iam_role_description     = "Semaphore - EC2 instance - ${local.service_name}"
 
   iam_role_policies = {
     ssm-agent = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"

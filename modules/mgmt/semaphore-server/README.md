@@ -47,10 +47,12 @@
 | <a name="input_public_key"></a> [public\_key](#input\_public\_key) | The SSH public key material to be configured in the EC2 instance | `string` | n/a | yes |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The CIDR block of the VPC where the resources will be deployed on | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC where the resources will be deployed on | `string` | n/a | yes |
-| <a name="input_allow_ssh_from_cidrs"></a> [allow\_ssh\_from\_cidrs](#input\_allow\_ssh\_from\_cidrs) | A list of CIDRs to be allowed to access the SSH port of the instance | `list(string)` | `[]` | no |
+| <a name="input_allow_ssh_from_vpc"></a> [allow\_ssh\_from\_vpc](#input\_allow\_ssh\_from\_vpc) | Whether to allow SSH access from any hosts in the VPC. Only enable for debugging purposes! | `bool` | `false` | no |
 | <a name="input_ami_architecture"></a> [ami\_architecture](#input\_ami\_architecture) | The architecture of the AMI used to deploy the EC2 instances | `string` | `"x86_64"` | no |
 | <a name="input_ami_name"></a> [ami\_name](#input\_ami\_name) | The name of the AMI used to deploy the EC2 instances | `string` | `"ubuntu-base-22.04-*"` | no |
 | <a name="input_ami_owner"></a> [ami\_owner](#input\_ami\_owner) | The owner of the AMI used to deploy the EC2 instances | `string` | `"self"` | no |
+| <a name="input_attach_security_groups"></a> [attach\_security\_groups](#input\_attach\_security\_groups) | A list security groups to be attached to the instance | `list(string)` | `[]` | no |
+| <a name="input_backup_bucket"></a> [backup\_bucket](#input\_backup\_bucket) | The name of an S3 bucket to be used to initialize the Semaphore database from a backup file | `string` | `null` | no |
 
 ## Outputs
 

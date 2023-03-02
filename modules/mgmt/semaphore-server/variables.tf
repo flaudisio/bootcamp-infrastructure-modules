@@ -31,6 +31,18 @@ variable "private_subnet_id" {
   type        = string
 }
 
+variable "attach_security_groups" {
+  description = "A list security groups to be attached to the instance"
+  type        = list(string)
+  default     = []
+}
+
+variable "allow_ssh_from_vpc" {
+  description = "Whether to allow SSH access from any hosts in the VPC. Only enable for debugging purposes!"
+  type        = bool
+  default     = false
+}
+
 variable "instance_type" {
   description = "The type of the EC2 instance"
   type        = string
@@ -59,8 +71,8 @@ variable "public_key" {
   type        = string
 }
 
-variable "allow_ssh_from_cidrs" {
-  description = "A list of CIDRs to be allowed to access the SSH port of the instance"
-  type        = list(string)
-  default     = []
+variable "backup_bucket" {
+  description = "The name of an S3 bucket to be used to initialize the Semaphore database from a backup file"
+  type        = string
+  default     = null
 }
