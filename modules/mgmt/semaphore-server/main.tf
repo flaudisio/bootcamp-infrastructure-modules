@@ -77,14 +77,13 @@ module "ec2_security_group" {
         cidr_blocks = var.vpc_cidr_block
       },
     ],
-    [
-      for cidr in var.allow_ssh_from_cidrs :
+    var.allow_ssh_from_vpc ? [
       {
         rule        = "ssh-tcp"
-        description = "SSH from allowed CIDR"
-        cidr_blocks = cidr
-      }
-    ]
+        description = "SSH from VPC"
+        cidr_blocks = var.vpc_cidr_block
+      },
+    ] : []
   )
 
   egress_rules = ["all-all"]
@@ -197,7 +196,7 @@ module "ec2_instance" {
 
   key_name                    = aws_key_pair.this.key_name
   subnet_id                   = var.private_subnet_id
-  vpc_security_group_ids      = [module.ec2_security_group.security_group_id]
+  vpc_security_group_ids      = concat([module.ec2_security_group.security_group_id], var.attach_security_groups)
   associate_public_ip_address = false
 
   user_data_base64 = base64encode(templatefile(local.user_data_file, local.user_data_vars))
