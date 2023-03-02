@@ -73,8 +73,8 @@
 | <a name="input_db_multi_az"></a> [db\_multi\_az](#input\_db\_multi\_az) | Whether to enable multi-AZ deployment of the database | `bool` | `true` | no |
 | <a name="input_db_skip_final_snapshot"></a> [db\_skip\_final\_snapshot](#input\_db\_skip\_final\_snapshot) | Whether to enable multi-AZ deployment of the database | `bool` | `false` | no |
 | <a name="input_ec2_ami_architecture"></a> [ec2\_ami\_architecture](#input\_ec2\_ami\_architecture) | The architecture of the AMI used to deploy the EC2 instances | `string` | `"x86_64"` | no |
-| <a name="input_ec2_ami_name"></a> [ec2\_ami\_name](#input\_ec2\_ami\_name) | The name of the AMI used to deploy the EC2 instances | `string` | `"ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20230213"` | no |
-| <a name="input_ec2_ami_owner"></a> [ec2\_ami\_owner](#input\_ec2\_ami\_owner) | The owner of the AMI used to deploy the EC2 instances | `string` | `"099720109477"` | no |
+| <a name="input_ec2_ami_name"></a> [ec2\_ami\_name](#input\_ec2\_ami\_name) | The name of the AMI used to deploy the EC2 instances | `string` | `"ubuntu-base-22.04-*"` | no |
+| <a name="input_ec2_ami_owner"></a> [ec2\_ami\_owner](#input\_ec2\_ami\_owner) | The owner of the AMI used to deploy the EC2 instances | `string` | `"self"` | no |
 | <a name="input_memcached_multi_az"></a> [memcached\_multi\_az](#input\_memcached\_multi\_az) | Whether the Memcached nodes should be created across multiple AZs. Requires `memcached_num_nodes > 1` | `bool` | `false` | no |
 | <a name="input_memcached_num_nodes"></a> [memcached\_num\_nodes](#input\_memcached\_num\_nodes) | The initial number of cache nodes that the cache cluster will have; must be between 1 and 40. If this number is reduced on subsequent runs, the highest numbered nodes will be removed | `number` | `1` | no |
 

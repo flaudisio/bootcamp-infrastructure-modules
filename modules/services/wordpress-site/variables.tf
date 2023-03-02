@@ -89,13 +89,13 @@ variable "ec2_instance_type" {
 variable "ec2_ami_name" {
   description = "The name of the AMI used to deploy the EC2 instances"
   type        = string
-  default     = "ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20230213"
+  default     = "ubuntu-base-22.04-*"
 }
 
 variable "ec2_ami_owner" {
   description = "The owner of the AMI used to deploy the EC2 instances"
   type        = string
-  default     = "099720109477" # Canonical
+  default     = "self"
 }
 
 variable "ec2_ami_architecture" {

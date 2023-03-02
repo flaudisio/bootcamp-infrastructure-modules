@@ -45,8 +45,9 @@
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The CIDR block of the VPC where the resources will be deployed on | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC where the resources will be deployed on | `string` | n/a | yes |
 | <a name="input_allow_vpc_access"></a> [allow\_vpc\_access](#input\_allow\_vpc\_access) | Whether to allow any VPC-originating access to private resources. Only enable for debugging purposes! | `bool` | `false` | no |
-| <a name="input_ami_name"></a> [ami\_name](#input\_ami\_name) | The name of the AMI used to deploy the EC2 instances | `string` | `"ubuntu-minimal/images/*ubuntu-jammy-22.04-*-minimal-20230213"` | no |
-| <a name="input_ami_owner"></a> [ami\_owner](#input\_ami\_owner) | The owner of the AMI used to deploy the EC2 instances | `string` | `"099720109477"` | no |
+| <a name="input_ami_architecture"></a> [ami\_architecture](#input\_ami\_architecture) | The architecture of the AMI used to deploy the EC2 instances | `string` | `"x86_64"` | no |
+| <a name="input_ami_name"></a> [ami\_name](#input\_ami\_name) | The name of the AMI used to deploy the EC2 instances | `string` | `"ubuntu-base-22.04-*"` | no |
+| <a name="input_ami_owner"></a> [ami\_owner](#input\_ami\_owner) | The owner of the AMI used to deploy the EC2 instances | `string` | `"self"` | no |
 | <a name="input_instance_count"></a> [instance\_count](#input\_instance\_count) | The number of EC2 instances to launch | `number` | `1` | no |
 
 ## Outputs

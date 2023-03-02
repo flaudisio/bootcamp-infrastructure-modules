@@ -65,7 +65,7 @@ data "aws_ami" "selected" {
 
   filter {
     name   = "architecture"
-    values = ["x86_64"]
+    values = [var.ami_architecture]
   }
 }
 
