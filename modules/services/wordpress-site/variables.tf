@@ -46,6 +46,18 @@ variable "private_subnets" {
   type        = list(string)
 }
 
+variable "attach_security_groups" {
+  description = "A list of security group IDs to be attached to the instance"
+  type        = list(string)
+  default     = []
+}
+
+variable "prometheus_security_group" {
+  description = "The ID of the Prometheus scrape security group to allow metrics scraping"
+  type        = string
+  default     = null
+}
+
 variable "allow_vpc_access" {
   description = "Whether to allow any VPC-originating access to private resources. Only enable for debugging purposes!"
   type        = bool

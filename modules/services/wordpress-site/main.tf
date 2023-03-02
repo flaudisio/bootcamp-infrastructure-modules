@@ -205,13 +205,22 @@ module "asg_security_group" {
   description = "WordPress - EC2 instances - ${var.site_name}"
   vpc_id      = var.vpc_id
 
-  ingress_with_source_security_group_id = [
-    {
-      rule                     = "http-8080-tcp"
-      description              = "HTTP from load balancer"
-      source_security_group_id = module.lb_security_group.security_group_id
-    },
-  ]
+  ingress_with_source_security_group_id = concat(
+    [
+      {
+        rule                     = "http-8080-tcp"
+        description              = "HTTP from load balancer"
+        source_security_group_id = module.lb_security_group.security_group_id
+      },
+    ],
+    var.prometheus_security_group != null ? [
+      {
+        rule                     = "http-8080-tcp"
+        description              = "Prometheus scraping"
+        source_security_group_id = var.prometheus_security_group
+      }
+    ] : []
+  )
 
   ingress_with_cidr_blocks = var.allow_vpc_access ? [
     {
@@ -282,7 +291,7 @@ module "asg" {
   key_name  = aws_key_pair.this.key_name
   user_data = base64encode(templatefile(local.user_data_file, local.user_data_vars))
 
-  security_groups = [module.asg_security_group.security_group_id]
+  security_groups = concat([module.asg_security_group.security_group_id], var.attach_security_groups)
 
   target_group_arns = module.load_balancer.target_group_arns
 
