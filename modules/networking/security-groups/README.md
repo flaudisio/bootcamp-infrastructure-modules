@@ -1,5 +1,16 @@
 # Security groups
 
+This module deploys security groups to be allowed in infrastructure components so region-level services like Ansible
+Semaphore and Prometheus can work.
+
+## Available security groups
+
+| Terraform output | Goal | How to use in modules |
+|------------------|------|-----------------------|
+| `semaphore_server_security_group` | Ansible Semaphore server base security group | Attach to Semaphore server instances |
+| `prometheus_server_security_group`| Prometheus server base security group | Attach to Prometheus server instances |
+| `infra_services_security_group`| Infra services access | Attach to client instances to allow access from Semaphore, Prometheus, etc |
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -13,9 +24,8 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_prometheus_scrape_security_group"></a> [prometheus\_scrape\_security\_group](#module\_prometheus\_scrape\_security\_group) | terraform-aws-modules/security-group/aws | 4.17.1 |
+| <a name="module_infra_services_security_group"></a> [infra\_services\_security\_group](#module\_infra\_services\_security\_group) | terraform-aws-modules/security-group/aws | 4.17.1 |
 | <a name="module_prometheus_server_security_group"></a> [prometheus\_server\_security\_group](#module\_prometheus\_server\_security\_group) | terraform-aws-modules/security-group/aws | 4.17.1 |
-| <a name="module_semaphore_access_security_group"></a> [semaphore\_access\_security\_group](#module\_semaphore\_access\_security\_group) | terraform-aws-modules/security-group/aws | 4.17.1 |
 | <a name="module_semaphore_server_security_group"></a> [semaphore\_server\_security\_group](#module\_semaphore\_server\_security\_group) | terraform-aws-modules/security-group/aws | 4.17.1 |
 | <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.2.0 |
 
@@ -34,8 +44,7 @@ No resources.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_prometheus_scrape_security_group"></a> [prometheus\_scrape\_security\_group](#output\_prometheus\_scrape\_security\_group) | The ID of the security group to be attached to instances to enable scraping from Prometheus server |
+| <a name="output_infra_services_security_group"></a> [infra\_services\_security\_group](#output\_infra\_services\_security\_group) | The ID of the security group to be attached to instances to allow access from infrastructure services |
 | <a name="output_prometheus_server_security_group"></a> [prometheus\_server\_security\_group](#output\_prometheus\_server\_security\_group) | The ID of the security group to be attached to Prometheus server |
-| <a name="output_semaphore_access_security_group"></a> [semaphore\_access\_security\_group](#output\_semaphore\_access\_security\_group) | The ID of the security group to be attached to instances to enable access from Ansible Semaphore server |
 | <a name="output_semaphore_server_security_group"></a> [semaphore\_server\_security\_group](#output\_semaphore\_server\_security\_group) | The ID of the security group to be attached to Ansible Semaphore server |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

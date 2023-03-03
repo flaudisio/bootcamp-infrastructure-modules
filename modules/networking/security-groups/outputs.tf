@@ -3,17 +3,12 @@ output "semaphore_server_security_group" {
   value       = module.semaphore_server_security_group.security_group_id
 }
 
-output "semaphore_access_security_group" {
-  description = "The ID of the security group to be attached to instances to enable access from Ansible Semaphore server"
-  value       = module.semaphore_access_security_group.security_group_id
-}
-
 output "prometheus_server_security_group" {
   description = "The ID of the security group to be attached to Prometheus server"
   value       = module.semaphore_server_security_group.security_group_id
 }
 
-output "prometheus_scrape_security_group" {
-  description = "The ID of the security group to be attached to instances to enable scraping from Prometheus server"
+output "infra_services_security_group" {
+  description = "The ID of the security group to be attached to instances to allow access from infrastructure services"
   value       = module.semaphore_access_security_group.security_group_id
 }
