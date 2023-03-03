@@ -2,6 +2,40 @@
 
 ## Unreleased
 
+### New modules
+
+- `mgmt/prometheus-server`
+- `networking/security-groups`
+- `storage/s3-bucket`
+
+### Affected modules
+
+- `mgmt/semaphore-server`
+- `mgmt/semaphore-trigger`
+- `networking/vpc`
+- `networking/wireguard-server`
+- `services/wordpress-site`
+
+### Description
+
+- The `ubuntu-base-22.04-*` AMI is now the default for all supported modules.
+- Default VPC resources are now managed by the `networking/vpc` module.
+- The Semaphore server stack has been changed to use ALB+ACM, RDS (Postgres) and auto scaling group.
+
+### Related links
+
+- flaudisio/bootcamp-infrastructure-modules#18
+- flaudisio/bootcamp-infrastructure-modules#17
+- flaudisio/bootcamp-infrastructure-modules#16
+- flaudisio/bootcamp-infrastructure-modules#15
+- flaudisio/bootcamp-infrastructure-modules#14
+- flaudisio/bootcamp-infrastructure-modules#13
+- flaudisio/bootcamp-infrastructure-modules#12
+- flaudisio/bootcamp-infrastructure-modules#11
+- flaudisio/bootcamp-infrastructure-modules#10
+- flaudisio/bootcamp-infrastructure-modules#9
+- flaudisio/bootcamp-infrastructure-modules#8
+
 ## v0.3.0 - 2023-02-16
 
 ### Affected modules
@@ -22,9 +56,9 @@
 
 ### Related links
 
-- flaudisio/bootcamp-infrastructure-modules#5
-- flaudisio/bootcamp-infrastructure-modules#6
 - flaudisio/bootcamp-infrastructure-modules#7
+- flaudisio/bootcamp-infrastructure-modules#6
+- flaudisio/bootcamp-infrastructure-modules#5
 
 ## v0.2.0 - 2023-01-15
 
