@@ -8,6 +8,8 @@ locals {
   db_name_prefix        = format("%s-db", var.site_name)
   efs_name_prefix       = format("%s-efs", var.site_name)
   memcached_name_prefix = format("%s-memcached", var.site_name)
+
+  app_port = 8080
 }
 
 # ------------------------------------------------------------------------------
@@ -105,13 +107,13 @@ module "load_balancer" {
     {
       name             = local.ec2_name_prefix
       backend_protocol = "HTTP"
-      backend_port     = 8080
+      backend_port     = local.app_port
       target_type      = "instance"
       health_check = {
         enabled             = true
         interval            = 30
         path                = "/metrics"
-        port                = 8080
+        port                = local.app_port
         healthy_threshold   = 2
         unhealthy_threshold = 3
         timeout             = 6
@@ -207,16 +209,20 @@ module "asg_security_group" {
 
   ingress_with_source_security_group_id = [
     {
-      rule                     = "http-8080-tcp"
-      description              = "HTTP from load balancer"
+      from_port                = local.app_port
+      to_port                  = local.app_port
+      protocol                 = "tcp"
+      description              = "App access from load balancer"
       source_security_group_id = module.lb_security_group.security_group_id
     },
   ]
 
   ingress_with_cidr_blocks = var.allow_vpc_access ? [
     {
-      rule        = "http-8080-tcp"
-      description = "HTTP from VPC"
+      from_port   = local.app_port
+      to_port     = local.app_port
+      protocol    = "tcp"
+      description = "App access from VPC"
       cidr_blocks = var.vpc_cidr_block
     },
     {
