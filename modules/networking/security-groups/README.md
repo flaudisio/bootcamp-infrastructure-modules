@@ -1,4 +1,4 @@
-# Security groups
+# Security Groups for Infrastructure Services
 
 This module deploys security groups to be allowed in infrastructure components so region-level services like Ansible
 Semaphore and Prometheus can work.
