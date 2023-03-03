@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.4.0 - 2023-03-03
+
 ### New modules
 
 - `mgmt/prometheus-server`
