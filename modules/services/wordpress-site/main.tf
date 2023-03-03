@@ -316,7 +316,13 @@ module "asg" {
     service   = module.asg_iam_policy.arn
   }
 
-  tags = module.tags.tags
+  # Enable Prometheus scraping on instances
+  tags = merge(
+    module.tags.tags,
+    {
+      "prometheus:wordpress-sites" = 1
+    }
+  )
 }
 
 # ------------------------------------------------------------------------------
