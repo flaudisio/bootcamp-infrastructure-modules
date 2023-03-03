@@ -10,5 +10,5 @@ output "prometheus_server_security_group" {
 
 output "infra_services_security_group" {
   description = "The ID of the security group to be attached to instances to allow access from infrastructure services"
-  value       = module.semaphore_access_security_group.security_group_id
+  value       = module.infra_services_security_group.security_group_id
 }
