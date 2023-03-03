@@ -78,7 +78,6 @@
 | <a name="input_ec2_ami_owner"></a> [ec2\_ami\_owner](#input\_ec2\_ami\_owner) | The owner of the AMI used to deploy the EC2 instances | `string` | `"self"` | no |
 | <a name="input_memcached_multi_az"></a> [memcached\_multi\_az](#input\_memcached\_multi\_az) | Whether the Memcached nodes should be created across multiple AZs. Requires `memcached_num_nodes > 1` | `bool` | `false` | no |
 | <a name="input_memcached_num_nodes"></a> [memcached\_num\_nodes](#input\_memcached\_num\_nodes) | The initial number of cache nodes that the cache cluster will have; must be between 1 and 40. If this number is reduced on subsequent runs, the highest numbered nodes will be removed | `number` | `1` | no |
-| <a name="input_prometheus_security_group"></a> [prometheus\_security\_group](#input\_prometheus\_security\_group) | The ID of the Prometheus scrape security group to allow metrics scraping | `string` | `null` | no |
 
 ## Outputs
 
