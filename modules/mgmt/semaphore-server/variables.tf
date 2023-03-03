@@ -2,6 +2,11 @@
 # COMMON VARIABLES
 # ------------------------------------------------------------------------------
 
+variable "account_route53_zone_name" {
+  description = "The name of the account's Route 53 zone"
+  type        = string
+}
+
 variable "account_route53_zone_id" {
   description = "The ID of the account's Route 53 zone"
   type        = string
@@ -26,9 +31,9 @@ variable "vpc_cidr_block" {
   type        = string
 }
 
-variable "private_subnet_id" {
-  description = "The ID of the private subnet where the instance will be deployed on"
-  type        = string
+variable "private_subnets" {
+  description = "A list of private subnet IDs to deploy the instances to"
+  type        = list(string)
 }
 
 variable "attach_security_groups" {
@@ -37,38 +42,66 @@ variable "attach_security_groups" {
   default     = []
 }
 
-variable "allow_ssh_from_vpc" {
-  description = "Whether to allow SSH access from any hosts in the VPC. Only enable for debugging purposes!"
+variable "allow_vpc_access" {
+  description = "Whether to allow VPC-originating access to private resources. Only enable for debugging purposes!"
   type        = bool
   default     = false
 }
 
-variable "instance_type" {
+variable "ec2_instance_count" {
+  description = "The number of EC2 instances to launch"
+  type        = number
+  default     = 1
+}
+
+variable "ec2_instance_type" {
   description = "The type of the EC2 instance"
   type        = string
 }
 
-variable "ami_name" {
+variable "ec2_ami_name" {
   description = "The name of the AMI used to deploy the EC2 instances"
   type        = string
   default     = "ubuntu-base-22.04-*"
 }
 
-variable "ami_owner" {
+variable "ec2_ami_owner" {
   description = "The owner of the AMI used to deploy the EC2 instances"
   type        = string
   default     = "self"
 }
 
-variable "ami_architecture" {
+variable "ec2_ami_architecture" {
   description = "The architecture of the AMI used to deploy the EC2 instances"
   type        = string
   default     = "x86_64"
 }
 
-variable "public_key" {
+variable "ec2_public_key" {
   description = "The SSH public key material to be configured in the EC2 instance"
   type        = string
+}
+
+variable "db_instance_type" {
+  description = "The type of the DB instance"
+  type        = string
+}
+
+variable "db_subnet_group" {
+  description = "The name of the DB subnet group"
+  type        = string
+}
+
+variable "db_multi_az" {
+  description = "Whether to enable multi-AZ deployment of the database"
+  type        = bool
+  default     = true
+}
+
+variable "db_skip_final_snapshot" {
+  description = "Whether to enable multi-AZ deployment of the database"
+  type        = bool
+  default     = false
 }
 
 variable "backup_bucket" {
