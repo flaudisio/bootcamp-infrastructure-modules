@@ -126,6 +126,8 @@ module "load_balancer" {
         matcher             = "200-399"
       }
       stickiness = {
+        # Enable stickiness to alleviate session problems in the (eventual) moments
+        # when more than one instance is deployed
         enabled         = true
         type            = "lb_cookie"
         cookie_duration = 3600
