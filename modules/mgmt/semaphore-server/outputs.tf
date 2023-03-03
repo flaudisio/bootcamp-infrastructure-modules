@@ -1,24 +1,45 @@
-output "instance_id" {
-  description = "The ID of the EC2 instance"
-  value       = module.ec2_instance.id
-}
-
-output "instance_private_ip" {
-  description = "The private IP of the EC2 instance"
-  value       = module.ec2_instance.private_ip
-}
-
-output "security_group_id" {
-  description = "The ID of the instance's security group"
-  value       = module.ec2_security_group.security_group_id
-}
+# ------------------------------------------------------------------------------
+# APPLICATION
+# ------------------------------------------------------------------------------
 
 output "semaphore_endpoint" {
   description = "The endpoint of the Semaphore server"
-  value       = format("http://%s", aws_route53_record.endpoint.fqdn)
+  value       = format("https://%s", aws_route53_record.load_balancer.fqdn)
 }
 
 output "semaphore_credentials_ssm_parameters" {
   description = "The SSM parameters that store Semaphore credentials"
   value       = values(aws_ssm_parameter.semaphore_credentials)[*].name
+}
+
+# ------------------------------------------------------------------------------
+# LOAD BALANCER
+# ------------------------------------------------------------------------------
+
+output "lb_dns_name" {
+  description = "The DNS name of the load balancer"
+  value       = module.load_balancer.lb_dns_name
+}
+
+# ------------------------------------------------------------------------------
+# ASG
+# ------------------------------------------------------------------------------
+
+output "asg_name" {
+  description = "The name of the Auto Scaling Group"
+  value       = module.asg.autoscaling_group_name
+}
+
+# ------------------------------------------------------------------------------
+# RDS
+# ------------------------------------------------------------------------------
+
+output "db_address" {
+  description = "The address of the database instance"
+  value       = aws_route53_record.rds.fqdn
+}
+
+output "db_endpoint" {
+  description = "The endpoint of the database instance"
+  value       = format("%s:%s", aws_route53_record.rds.fqdn, module.rds.db_instance_port)
 }
