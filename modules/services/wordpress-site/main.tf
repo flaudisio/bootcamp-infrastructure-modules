@@ -106,10 +106,11 @@ module "load_balancer" {
 
   target_groups = [
     {
-      name             = local.ec2_name_prefix
-      backend_protocol = "HTTP"
-      backend_port     = local.app_port
-      target_type      = "instance"
+      name                 = local.ec2_name_prefix
+      backend_protocol     = "HTTP"
+      backend_port         = local.app_port
+      target_type          = "instance"
+      deregistration_delay = 30
       health_check = {
         enabled             = true
         interval            = 30
