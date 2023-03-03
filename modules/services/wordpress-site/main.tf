@@ -99,6 +99,7 @@ module "load_balancer" {
       port               = 443
       protocol           = "HTTPS"
       certificate_arn    = module.acm.acm_certificate_arn
+      ssl_policy         = "ELBSecurityPolicy-FS-1-2-Res-2020-10"
       target_group_index = 0
     },
   ]
