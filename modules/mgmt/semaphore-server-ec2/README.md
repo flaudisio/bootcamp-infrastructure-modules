@@ -1,4 +1,4 @@
-# Ansible Semaphore EC2 Instance
+# Ansible Semaphore on EC2 Instance
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
