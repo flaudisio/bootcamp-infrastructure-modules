@@ -48,6 +48,12 @@ variable "allow_vpc_access" {
   default     = false
 }
 
+variable "subdomain" {
+  description = "The name of the subdomain to be created in the account's Route 53 zone; defaults to the service name"
+  type        = string
+  default     = null
+}
+
 variable "ec2_instance_count" {
   description = "The number of EC2 instances to launch"
   type        = number

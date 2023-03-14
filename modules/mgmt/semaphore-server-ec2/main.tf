@@ -3,8 +3,8 @@
 # ------------------------------------------------------------------------------
 
 locals {
-  service_name = "semaphore-server"
-  dns_name     = "semaphore"
+  service_name  = "semaphore-server"
+  dns_subdomain = coalesce(var.subdomain, local.service_name)
 
   lb_name_prefix  = format("%s-lb", local.service_name)
   ec2_name_prefix = format("%s-ec2", local.service_name)
@@ -34,7 +34,7 @@ module "acm" {
   source  = "terraform-aws-modules/acm/aws"
   version = "4.3.1"
 
-  domain_name = format("%s.%s", local.dns_name, var.account_route53_zone_name)
+  domain_name = format("%s.%s", local.dns_subdomain, var.account_route53_zone_name)
   zone_id     = var.account_route53_zone_id
 
   wait_for_validation = true
@@ -494,7 +494,7 @@ resource "aws_ssm_parameter" "semaphore_credentials" {
 resource "aws_route53_record" "load_balancer" {
   zone_id = var.account_route53_zone_id
 
-  name = local.dns_name
+  name = local.dns_subdomain
   type = "A"
 
   alias {
