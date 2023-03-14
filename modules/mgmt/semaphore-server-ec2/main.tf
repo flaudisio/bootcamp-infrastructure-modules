@@ -457,8 +457,10 @@ module "rds" {
 
 resource "random_password" "semaphore_credentials" {
   for_each = toset([
-    "admin-password",
+    "cookie-hash",
+    "cookie-encryption",
     "access-key-encryption",
+    "admin-password",
   ])
 
   length      = 32
@@ -473,6 +475,8 @@ resource "aws_ssm_parameter" "semaphore_credentials" {
     db-name               = module.rds.db_instance_name
     db-user               = module.rds.db_instance_username
     db-pass               = module.rds.db_instance_password
+    cookie-hash           = base64encode(random_password.semaphore_credentials["cookie-hash"].result)
+    cookie-encryption     = base64encode(random_password.semaphore_credentials["cookie-encryption"].result)
     access-key-encryption = base64encode(random_password.semaphore_credentials["access-key-encryption"].result)
     admin-username        = "admin"
     admin-password        = random_password.semaphore_credentials["admin-password"].result
