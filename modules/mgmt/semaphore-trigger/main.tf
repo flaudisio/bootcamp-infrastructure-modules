@@ -164,7 +164,6 @@ module "lambda_function" {
   # App configuration
   environment_variables = {
     ST_ENABLE_WORKFLOW      = var.enable_lambda_function
-    ST_ENVIRONMENT          = var.environment
     ST_SEMAPHORE_URL        = var.semaphore_endpoint
     ST_SEMAPHORE_TOKEN      = var.semaphore_token
     ST_SEMAPHORE_PROJECT_ID = var.semaphore_project_id
