@@ -117,7 +117,7 @@ module "load_balancer" {
       health_check = {
         enabled             = true
         interval            = 30
-        path                = "/" # TODO: change health check path
+        path                = "/api/ping"
         port                = local.app_port
         healthy_threshold   = 2
         unhealthy_threshold = 3
