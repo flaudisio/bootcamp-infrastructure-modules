@@ -146,7 +146,7 @@ module "lambda_function" {
 
   # VPC config
   vpc_subnet_ids         = var.private_subnets
-  vpc_security_group_ids = [module.lambda_security_group.security_group_id]
+  vpc_security_group_ids = concat([module.lambda_security_group.security_group_id], var.attach_security_groups)
   attach_network_policy  = true
 
   # This module creates only the function infrastructure, so we use a "dummy" package.

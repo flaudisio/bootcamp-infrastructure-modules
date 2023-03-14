@@ -31,6 +31,12 @@ variable "private_subnets" {
   type        = list(string)
 }
 
+variable "attach_security_groups" {
+  description = "A list security groups to be attached to the function"
+  type        = list(string)
+  default     = []
+}
+
 variable "enable_eventbridge_rules" {
   description = "Whether to make the EventBridge rules to watch events. Change to `false` to disable the entire Semaphore Trigger workflow"
   type        = bool
