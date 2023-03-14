@@ -1,4 +1,4 @@
-# Ansible Semaphore EC2 Instance
+# Ansible Semaphore on EC2 Instance
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -66,6 +66,7 @@
 | <a name="input_ec2_ami_name"></a> [ec2\_ami\_name](#input\_ec2\_ami\_name) | The name of the AMI used to deploy the EC2 instances | `string` | `"ubuntu-base-22.04-*"` | no |
 | <a name="input_ec2_ami_owner"></a> [ec2\_ami\_owner](#input\_ec2\_ami\_owner) | The owner of the AMI used to deploy the EC2 instances | `string` | `"self"` | no |
 | <a name="input_ec2_instance_count"></a> [ec2\_instance\_count](#input\_ec2\_instance\_count) | The number of EC2 instances to launch | `number` | `1` | no |
+| <a name="input_subdomain"></a> [subdomain](#input\_subdomain) | The name of the subdomain to be created in the account's Route 53 zone; defaults to the service name | `string` | `null` | no |
 
 ## Outputs
 

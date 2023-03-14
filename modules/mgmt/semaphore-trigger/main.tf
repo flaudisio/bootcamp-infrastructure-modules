@@ -135,7 +135,7 @@ module "lambda_function" {
   version = "4.7.1"
 
   function_name = local.service_name
-  description   = "Function for triggering Ansible Semaphore tasks"
+  description   = "Function for triggering tasks in Ansible Semaphore"
 
   handler       = "semaphore_trigger/app.handler"
   runtime       = "python3.9"
@@ -146,7 +146,7 @@ module "lambda_function" {
 
   # VPC config
   vpc_subnet_ids         = var.private_subnets
-  vpc_security_group_ids = [module.lambda_security_group.security_group_id]
+  vpc_security_group_ids = concat([module.lambda_security_group.security_group_id], var.attach_security_groups)
   attach_network_policy  = true
 
   # This module creates only the function infrastructure, so we use a "dummy" package.
@@ -164,7 +164,6 @@ module "lambda_function" {
   # App configuration
   environment_variables = {
     ST_ENABLE_WORKFLOW      = var.enable_lambda_function
-    ST_ENVIRONMENT          = var.environment
     ST_SEMAPHORE_URL        = var.semaphore_endpoint
     ST_SEMAPHORE_TOKEN      = var.semaphore_token
     ST_SEMAPHORE_PROJECT_ID = var.semaphore_project_id

@@ -3,8 +3,8 @@
 # ------------------------------------------------------------------------------
 
 locals {
-  service_name = "semaphore-server"
-  dns_name     = "semaphore"
+  service_name  = "semaphore-server"
+  dns_subdomain = coalesce(var.subdomain, local.service_name)
 
   lb_name_prefix  = format("%s-lb", local.service_name)
   ec2_name_prefix = format("%s-ec2", local.service_name)
@@ -34,7 +34,7 @@ module "acm" {
   source  = "terraform-aws-modules/acm/aws"
   version = "4.3.1"
 
-  domain_name = format("%s.%s", local.dns_name, var.account_route53_zone_name)
+  domain_name = format("%s.%s", local.dns_subdomain, var.account_route53_zone_name)
   zone_id     = var.account_route53_zone_id
 
   wait_for_validation = true
@@ -117,7 +117,7 @@ module "load_balancer" {
       health_check = {
         enabled             = true
         interval            = 30
-        path                = "/" # TODO: change health check path
+        path                = "/api/ping"
         port                = local.app_port
         healthy_threshold   = 2
         unhealthy_threshold = 3
@@ -457,8 +457,10 @@ module "rds" {
 
 resource "random_password" "semaphore_credentials" {
   for_each = toset([
-    "admin-password",
+    "cookie-hash",
+    "cookie-encryption",
     "access-key-encryption",
+    "admin-password",
   ])
 
   length      = 32
@@ -473,6 +475,8 @@ resource "aws_ssm_parameter" "semaphore_credentials" {
     db-name               = module.rds.db_instance_name
     db-user               = module.rds.db_instance_username
     db-pass               = module.rds.db_instance_password
+    cookie-hash           = base64encode(random_password.semaphore_credentials["cookie-hash"].result)
+    cookie-encryption     = base64encode(random_password.semaphore_credentials["cookie-encryption"].result)
     access-key-encryption = base64encode(random_password.semaphore_credentials["access-key-encryption"].result)
     admin-username        = "admin"
     admin-password        = random_password.semaphore_credentials["admin-password"].result
@@ -494,7 +498,7 @@ resource "aws_ssm_parameter" "semaphore_credentials" {
 resource "aws_route53_record" "load_balancer" {
   zone_id = var.account_route53_zone_id
 
-  name = local.dns_name
+  name = local.dns_subdomain
   type = "A"
 
   alias {
