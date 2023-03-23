@@ -21,7 +21,7 @@
 | <a name="module_client_instances"></a> [client\_instances](#module\_client\_instances) | ./modules/instances | n/a |
 | <a name="module_intra_security_group"></a> [intra\_security\_group](#module\_intra\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
 | <a name="module_server_instances"></a> [server\_instances](#module\_server\_instances) | ./modules/instances | n/a |
-| <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.2.0 |
+| <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.3.0 |
 
 ## Resources
 

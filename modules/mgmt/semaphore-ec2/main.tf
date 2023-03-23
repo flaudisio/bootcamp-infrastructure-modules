@@ -19,11 +19,11 @@ locals {
 
 module "tags" {
   source  = "flaudisio/standard-tags/aws"
-  version = "0.2.0"
+  version = "0.3.0"
 
   environment = var.environment
-  service     = local.service_name
   owner       = "infra"
+  service     = local.service_name
 }
 
 # ------------------------------------------------------------------------------

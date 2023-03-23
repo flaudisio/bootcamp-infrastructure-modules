@@ -18,7 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.1.1 |
+| <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.3.0 |
 
 ## Resources
 
