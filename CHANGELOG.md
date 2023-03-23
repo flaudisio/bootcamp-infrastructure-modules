@@ -18,9 +18,9 @@
 
 ### Description
 
-- The `services/nomad-cluster` has been introduced to deploy Nomad clusters composed by an ASG for servers and 0 or many
+- The `services/nomad-cluster` module has been introduced to deploy Nomad clusters composed by an ASG for servers and 0 or many
   ASGs for clients.
-- The `mgmt/semaphore-ecs` has been introduced to deploy Ansible Semaphore on ECS/Fargate.
+- The `mgmt/semaphore-ecs` module has been introduced to deploy Ansible Semaphore on ECS/Fargate.
 - The `mgmt/semaphore-server` module has been renamed to `mgmt/semaphore-ec2`.
 - All supported modules now use `gp3` as default EBS storage type.
 - Minor fixes on resource tagging and explicit dependencies.
