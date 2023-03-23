@@ -121,6 +121,7 @@ module "lambda_security_group" {
   description = "Semaphore Trigger - Lambda - ${local.service_name}"
   vpc_id      = var.vpc_id
 
+  # TODO: change to allow only SSH and HTTP/HTTPS to infra-services-access security group
   egress_rules = ["all-all"]
 
   tags = module.tags.tags
