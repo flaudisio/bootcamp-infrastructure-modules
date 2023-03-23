@@ -38,7 +38,7 @@ No resources.
 | <a name="input_semaphore_project_id"></a> [semaphore\_project\_id](#input\_semaphore\_project\_id) | The ID of the Ansible Semaphore project that manages instances | `number` | n/a | yes |
 | <a name="input_semaphore_token"></a> [semaphore\_token](#input\_semaphore\_token) | The token of the Ansible Semaphore server | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC where the Lambda function will be deployed on | `string` | n/a | yes |
-| <a name="input_attach_security_groups"></a> [attach\_security\_groups](#input\_attach\_security\_groups) | A list security groups to be attached to the function | `list(string)` | `[]` | no |
+| <a name="input_attach_security_groups"></a> [attach\_security\_groups](#input\_attach\_security\_groups) | A list of security groups to be attached to the function | `list(string)` | `[]` | no |
 | <a name="input_enable_eventbridge_rules"></a> [enable\_eventbridge\_rules](#input\_enable\_eventbridge\_rules) | Whether to make the EventBridge rules to watch events. Change to `false` to disable the entire Semaphore Trigger workflow | `bool` | `true` | no |
 | <a name="input_enable_lambda_function"></a> [enable\_lambda\_function](#input\_enable\_lambda\_function) | Whether to enable the Lambda function. Change to `false` to ignore new instance launches | `bool` | `true` | no |
 | <a name="input_function_memory_size"></a> [function\_memory\_size](#input\_function\_memory\_size) | The amount of memory (in MB) available to the function at runtime | `number` | `128` | no |

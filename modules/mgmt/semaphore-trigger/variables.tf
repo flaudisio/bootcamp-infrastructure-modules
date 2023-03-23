@@ -32,7 +32,7 @@ variable "private_subnets" {
 }
 
 variable "attach_security_groups" {
-  description = "A list security groups to be attached to the function"
+  description = "A list of security groups to be attached to the function"
   type        = list(string)
   default     = []
 }
