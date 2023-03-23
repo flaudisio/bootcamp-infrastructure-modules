@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.5.0 - 2023-03-23
+
 ### New modules
 
 - `mgmt/semaphore-ecs`
