@@ -2,6 +2,33 @@
 
 ## Unreleased
 
+### New modules
+
+- `mgmt/semaphore-ecs`
+- `services/nomad-cluster`
+
+### Affected modules
+
+- `mgmt/semaphore-server`
+- `mgmt/semaphore-trigger`
+- `networking/wireguard-server`
+- `services/wordpress-site`
+
+### Description
+
+- The `services/nomad-cluster` has been introduced to deploy Nomad clusters composed by an ASG for servers and 0 or many
+  ASGs for clients.
+- The `mgmt/semaphore-ecs` has been introduced to deploy Ansible Semaphore on ECS/Fargate.
+- The `mgmt/semaphore-server` module has been renamed to `mgmt/semaphore-ec2`.
+- All supported modules now use `gp3` as default EBS storage type.
+- Minor fixes on resource tagging and explicit dependencies.
+
+### Related links
+
+- flaudisio/bootcamp-infrastructure-modules#21
+- flaudisio/bootcamp-infrastructure-modules#20
+- flaudisio/bootcamp-infrastructure-modules#19
+
 ## v0.4.0 - 2023-03-03
 
 ### New modules
