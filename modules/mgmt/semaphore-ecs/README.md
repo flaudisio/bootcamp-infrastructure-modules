@@ -59,22 +59,23 @@
 | <a name="input_allow_vpc_access"></a> [allow\_vpc\_access](#input\_allow\_vpc\_access) | Whether to allow VPC-originating access to private resources. Only enable for debugging purposes! | `bool` | `false` | no |
 | <a name="input_attach_security_groups"></a> [attach\_security\_groups](#input\_attach\_security\_groups) | A list security groups to be attached to the instance | `list(string)` | `[]` | no |
 | <a name="input_backup_bucket"></a> [backup\_bucket](#input\_backup\_bucket) | The name of an S3 bucket to be used to initialize the Semaphore database from a backup file | `string` | `null` | no |
-| <a name="input_container_architecture"></a> [container\_architecture](#input\_container\_architecture) | The architecture of the Semaphore containers | `string` | `"arm64"` | no |
 | <a name="input_container_count"></a> [container\_count](#input\_container\_count) | The number of Semaphore containers to run | `number` | `1` | no |
-| <a name="input_container_cpu"></a> [container\_cpu](#input\_container\_cpu) | The amount of CPU shares available to the container | `number` | `512` | no |
-| <a name="input_container_extra_env_vars"></a> [container\_extra\_env\_vars](#input\_container\_extra\_env\_vars) | A map of extra environment variables to be configured in the container | `map(string)` | `{}` | no |
-| <a name="input_container_image"></a> [container\_image](#input\_container\_image) | Docker image to run the Semaphore containers | `string` | `"flaudisio/bootcamp-semaphore:2.8.89-debian"` | no |
-| <a name="input_container_memory"></a> [container\_memory](#input\_container\_memory) | The amount of memory available to the container | `number` | `1024` | no |
-| <a name="input_container_storage_size"></a> [container\_storage\_size](#input\_container\_storage\_size) | The size of the ephemeral storage available to the container | `number` | `30` | no |
 | <a name="input_db_multi_az"></a> [db\_multi\_az](#input\_db\_multi\_az) | Whether to enable multi-AZ deployment of the database | `bool` | `true` | no |
 | <a name="input_db_skip_final_snapshot"></a> [db\_skip\_final\_snapshot](#input\_db\_skip\_final\_snapshot) | Whether to enable multi-AZ deployment of the database | `bool` | `false` | no |
 | <a name="input_db_snapshot_identifier"></a> [db\_snapshot\_identifier](#input\_db\_snapshot\_identifier) | The identifier of an existing snapshot to create the database from | `string` | `null` | no |
+| <a name="input_ecs_task_architecture"></a> [ecs\_task\_architecture](#input\_ecs\_task\_architecture) | The CPU architecture to run the containers | `string` | `"arm64"` | no |
+| <a name="input_ecs_task_cpu"></a> [ecs\_task\_cpu](#input\_ecs\_task\_cpu) | The amount of CPU shares available to containers | `number` | `512` | no |
+| <a name="input_ecs_task_memory"></a> [ecs\_task\_memory](#input\_ecs\_task\_memory) | The amount of memory available to containers | `number` | `1024` | no |
+| <a name="input_housekeeper_image"></a> [housekeeper\_image](#input\_housekeeper\_image) | The semaphore-housekeeper image | `string` | `"flaudisio/bootcamp-semaphore-housekeeper:0.1.0"` | no |
+| <a name="input_housekeeper_schedule"></a> [housekeeper\_schedule](#input\_housekeeper\_schedule) | The semaphore-housekeeper schedule | `string` | `"0 * * * *"` | no |
 | <a name="input_logs_retention_in_days"></a> [logs\_retention\_in\_days](#input\_logs\_retention\_in\_days) | The number of days to retain container logs on CloudWatch Logs | `number` | `7` | no |
 | <a name="input_semaphore_admin_email"></a> [semaphore\_admin\_email](#input\_semaphore\_admin\_email) | The email of the admin user. Defaults to `<admin-username>@<account-domain>` | `string` | `null` | no |
 | <a name="input_semaphore_admin_fullname"></a> [semaphore\_admin\_fullname](#input\_semaphore\_admin\_fullname) | The full name of the admin user | `string` | `"Semaphore Admin"` | no |
 | <a name="input_semaphore_admin_username"></a> [semaphore\_admin\_username](#input\_semaphore\_admin\_username) | The username of the admin user | `string` | `"admin"` | no |
-| <a name="input_semaphore_concurrency_mode"></a> [semaphore\_concurrency\_mode](#input\_semaphore\_concurrency\_mode) | Concurrency mode configuration. When set to `project`, tasks will run in parallel if and only if they do not share the same project ID.<br>When set to `node`, a task will run in parallel if and only if the hosts affected by tasks already running does not intersect with the hosts<br>that would be affected by the task in question. | `string` | `"node"` | no |
+| <a name="input_semaphore_extra_env_vars"></a> [semaphore\_extra\_env\_vars](#input\_semaphore\_extra\_env\_vars) | A map of extra environment variables to be configured in the Semaphore container | `map(string)` | `{}` | no |
+| <a name="input_semaphore_image"></a> [semaphore\_image](#input\_semaphore\_image) | Docker image to run the Semaphore containers | `string` | `"flaudisio/bootcamp-semaphore:2.8.89-debian"` | no |
 | <a name="input_semaphore_max_parallel_tasks"></a> [semaphore\_max\_parallel\_tasks](#input\_semaphore\_max\_parallel\_tasks) | Max allowed parallel tasks if `semaphore_concurrency_mode != ""`. Can also be set/changed within the web UI (project settings) | `number` | `2` | no |
+| <a name="input_semaphore_storage_size"></a> [semaphore\_storage\_size](#input\_semaphore\_storage\_size) | The size of the ephemeral storage available to the Semaphore container | `number` | `30` | no |
 | <a name="input_subdomain"></a> [subdomain](#input\_subdomain) | The name of the subdomain to be created in the account's Route 53 zone; defaults to the service name | `string` | `null` | no |
 
 ## Outputs

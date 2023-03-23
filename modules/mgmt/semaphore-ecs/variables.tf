@@ -59,51 +59,33 @@ variable "subdomain" {
   default     = null
 }
 
-variable "container_image" {
-  description = "Docker image to run the Semaphore containers"
-  type        = string
-  default     = "flaudisio/bootcamp-semaphore:2.8.89-debian"
-}
-
 variable "container_count" {
   description = "The number of Semaphore containers to run"
   type        = number
   default     = 1
 }
 
-variable "container_architecture" {
-  description = "The architecture of the Semaphore containers"
+variable "ecs_task_architecture" {
+  description = "The CPU architecture to run the containers"
   type        = string
   default     = "arm64"
 
   validation {
-    condition     = contains(["x86_64", "arm64"], var.container_architecture)
+    condition     = contains(["x86_64", "arm64"], var.ecs_task_architecture)
     error_message = "The container architecture must be one of 'x86_64', 'arm64' (case sensitive)."
   }
 }
 
-variable "container_cpu" {
-  description = "The amount of CPU shares available to the container"
+variable "ecs_task_cpu" {
+  description = "The amount of CPU shares available to containers"
   type        = number
   default     = 512
 }
 
-variable "container_memory" {
-  description = "The amount of memory available to the container"
+variable "ecs_task_memory" {
+  description = "The amount of memory available to containers"
   type        = number
   default     = 1024
-}
-
-variable "container_storage_size" {
-  description = "The size of the ephemeral storage available to the container"
-  type        = number
-  default     = 30
-}
-
-variable "container_extra_env_vars" {
-  description = "A map of extra environment variables to be configured in the container"
-  type        = map(string)
-  default     = {}
 }
 
 variable "db_instance_type" {
@@ -146,6 +128,24 @@ variable "logs_retention_in_days" {
   default     = 7
 }
 
+variable "semaphore_image" {
+  description = "Docker image to run the Semaphore containers"
+  type        = string
+  default     = "flaudisio/bootcamp-semaphore:2.8.89-debian"
+}
+
+variable "semaphore_storage_size" {
+  description = "The size of the ephemeral storage available to the Semaphore container"
+  type        = number
+  default     = 30
+}
+
+variable "semaphore_extra_env_vars" {
+  description = "A map of extra environment variables to be configured in the Semaphore container"
+  type        = map(string)
+  default     = {}
+}
+
 variable "semaphore_admin_username" {
   description = "The username of the admin user"
   type        = string
@@ -164,18 +164,20 @@ variable "semaphore_admin_email" {
   default     = null
 }
 
-variable "semaphore_concurrency_mode" {
-  description = <<-EOT
-    Concurrency mode configuration. When set to `project`, tasks will run in parallel if and only if they do not share the same project ID.
-    When set to `node`, a task will run in parallel if and only if the hosts affected by tasks already running does not intersect with the hosts
-    that would be affected by the task in question.
-  EOT
-  type        = string
-  default     = "node"
-}
-
 variable "semaphore_max_parallel_tasks" {
   description = "Max allowed parallel tasks if `semaphore_concurrency_mode != \"\"`. Can also be set/changed within the web UI (project settings)"
   type        = number
   default     = 2
+}
+
+variable "housekeeper_image" {
+  description = "The semaphore-housekeeper image"
+  type        = string
+  default     = "flaudisio/bootcamp-semaphore-housekeeper:0.1.0"
+}
+
+variable "housekeeper_schedule" {
+  description = "The semaphore-housekeeper schedule"
+  type        = string
+  default     = "0 * * * *"
 }

@@ -10,7 +10,7 @@ locals {
   ecs_task_name_prefix = format("%s-ecs-tasks", local.service_name)
   db_name_prefix       = format("%s-db", local.service_name)
 
-  container_port = 3000
+  semaphore_port = 3000
 
   # App details
   semaphore_endpoint = format("https://%s", aws_route53_record.load_balancer.fqdn)
@@ -114,14 +114,14 @@ module "load_balancer" {
     {
       name                 = local.ecs_task_name_prefix
       backend_protocol     = "HTTP"
-      backend_port         = local.container_port
+      backend_port         = local.semaphore_port
       target_type          = "ip"
       deregistration_delay = 30
       health_check = {
         enabled             = true
         interval            = 30
         path                = "/api/ping"
-        port                = local.container_port
+        port                = local.semaphore_port
         healthy_threshold   = 2
         unhealthy_threshold = 3
         timeout             = 6
@@ -275,8 +275,8 @@ module "ecs_task_security_group" {
 
   ingress_with_source_security_group_id = [
     {
-      from_port                = local.container_port
-      to_port                  = local.container_port
+      from_port                = local.semaphore_port
+      to_port                  = local.semaphore_port
       protocol                 = "tcp"
       description              = "App access from load balancer"
       source_security_group_id = module.lb_security_group.security_group_id
@@ -285,8 +285,8 @@ module "ecs_task_security_group" {
 
   ingress_with_cidr_blocks = var.allow_vpc_access ? [
     {
-      from_port   = local.container_port
-      to_port     = local.container_port
+      from_port   = local.semaphore_port
+      to_port     = local.semaphore_port
       protocol    = "tcp"
       description = "App access from VPC"
       cidr_blocks = var.vpc_cidr_block
@@ -320,8 +320,10 @@ locals {
     format("%s@%s", var.semaphore_admin_username, var.account_route53_zone_name)
   )
 
+  semaphore_tmp_path = "/semaphore/tmp"
+
   # Note: integer values are converted to string as required by the 'container_definitions' argument
-  container_env_vars = {
+  semaphore_env_vars = {
     SEMAPHORE_DB_DIALECT         = "postgres"
     SEMAPHORE_DB_HOST            = module.rds.db_instance_address
     SEMAPHORE_DB_PORT            = tostring(module.rds.db_instance_port)
@@ -331,8 +333,22 @@ locals {
     SEMAPHORE_ADMIN_NAME         = var.semaphore_admin_fullname
     SEMAPHORE_ADMIN_EMAIL        = local.semaphore_admin_email
     SEMAPHORE_WEB_ROOT           = local.semaphore_endpoint
-    SEMAPHORE_CONCURRENCY_MODE   = var.semaphore_concurrency_mode
     SEMAPHORE_MAX_PARALLEL_TASKS = tostring(var.semaphore_max_parallel_tasks)
+    SEMAPHORE_TMP_PATH           = local.semaphore_tmp_path
+  }
+
+  housekeeper_env_vars = {
+    SCHEDULE           = var.housekeeper_schedule
+    SEMAPHORE_TMP_PATH = local.semaphore_tmp_path
+  }
+
+  container_log_configuration = {
+    logDriver = "awslogs"
+    options = {
+      awslogs-region        = var.aws_region
+      awslogs-group         = aws_cloudwatch_log_group.this.name
+      awslogs-stream-prefix = "ecs"
+    }
   }
 }
 
@@ -347,31 +363,29 @@ resource "aws_ecs_task_definition" "this" {
 
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = upper(var.container_architecture)
+    cpu_architecture        = upper(var.ecs_task_architecture)
   }
 
-  cpu    = var.container_cpu
-  memory = var.container_memory
+  cpu    = var.ecs_task_cpu
+  memory = var.ecs_task_memory
 
   ephemeral_storage {
-    size_in_gib = var.container_storage_size
+    size_in_gib = var.semaphore_storage_size
   }
 
   container_definitions = jsonencode([
     {
       name      = "semaphore"
-      image     = var.container_image
+      image     = var.semaphore_image
       essential = true
-      cpu       = var.container_cpu
-      memory    = var.container_memory
       portMappings = [
         {
-          containerPort = local.container_port
+          containerPort = local.semaphore_port
           protocol      = "tcp"
         },
       ]
       environment = [
-        for k, v in merge(local.container_env_vars, var.container_extra_env_vars) :
+        for k, v in merge(local.semaphore_env_vars, var.semaphore_extra_env_vars) :
         {
           name  = k
           value = v
@@ -384,14 +398,26 @@ resource "aws_ecs_task_definition" "this" {
           valueFrom = v.name
         }
       ]
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          awslogs-region        = var.aws_region
-          awslogs-group         = aws_cloudwatch_log_group.this.name
-          awslogs-stream-prefix = "ecs"
+      logConfiguration = local.container_log_configuration
+    },
+    {
+      name      = "housekeeper"
+      image     = var.housekeeper_image
+      essential = false
+      environment = [
+        for k, v in local.housekeeper_env_vars :
+        {
+          name  = k
+          value = v
         }
-      }
+      ]
+      volumesFrom = [
+        {
+          sourceContainer = "semaphore"
+          readOnly        = false
+        }
+      ]
+      logConfiguration = local.container_log_configuration
     },
   ])
 
@@ -404,7 +430,7 @@ resource "aws_ecs_task_definition" "this" {
 
 locals {
   # Decode the applied container definition to HCL to make it easier to reference its attributes below
-  container_definition = jsondecode(aws_ecs_task_definition.this.container_definitions)[0]
+  semaphore_container_definition = jsondecode(aws_ecs_task_definition.this.container_definitions)[0]
 }
 
 resource "aws_ecs_service" "this" {
@@ -430,8 +456,8 @@ resource "aws_ecs_service" "this" {
 
   load_balancer {
     target_group_arn = module.load_balancer.target_group_arns[0]
-    container_name   = local.container_definition.name
-    container_port   = local.container_definition.portMappings[0].containerPort
+    container_name   = local.semaphore_container_definition.name
+    container_port   = local.semaphore_container_definition.portMappings[0].containerPort
   }
 
   enable_ecs_managed_tags = true
@@ -507,8 +533,8 @@ module "rds" {
   backup_window      = "01:00-03:00"
 
   snapshot_identifier   = var.db_snapshot_identifier
-  copy_tags_to_snapshot = true
   skip_final_snapshot   = var.db_skip_final_snapshot
+  copy_tags_to_snapshot = true
 
   create_db_subnet_group = false
   db_subnet_group_name   = var.db_subnet_group
