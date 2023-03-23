@@ -21,7 +21,7 @@
 | <a name="module_asg"></a> [asg](#module\_asg) | terraform-aws-modules/autoscaling/aws | 6.5.3 |
 | <a name="module_asg_iam_policy"></a> [asg\_iam\_policy](#module\_asg\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | 5.11.2 |
 | <a name="module_asg_security_group"></a> [asg\_security\_group](#module\_asg\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
-| <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.1.1 |
+| <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.3.0 |
 
 ## Resources
 

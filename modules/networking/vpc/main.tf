@@ -46,11 +46,11 @@ locals {
 
 module "tags" {
   source  = "flaudisio/standard-tags/aws"
-  version = "0.1.1"
+  version = "0.3.0"
 
   environment = var.environment
-  service     = "core-infra"
   owner       = "infra"
+  service     = "core-infra"
 }
 
 # ------------------------------------------------------------------------------

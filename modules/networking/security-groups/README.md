@@ -30,7 +30,7 @@ No providers.
 | <a name="module_infra_services_security_group"></a> [infra\_services\_security\_group](#module\_infra\_services\_security\_group) | terraform-aws-modules/security-group/aws | 4.17.1 |
 | <a name="module_prometheus_server_security_group"></a> [prometheus\_server\_security\_group](#module\_prometheus\_server\_security\_group) | terraform-aws-modules/security-group/aws | 4.17.1 |
 | <a name="module_semaphore_server_security_group"></a> [semaphore\_server\_security\_group](#module\_semaphore\_server\_security\_group) | terraform-aws-modules/security-group/aws | 4.17.1 |
-| <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.2.0 |
+| <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.3.0 |
 
 ## Resources
 
