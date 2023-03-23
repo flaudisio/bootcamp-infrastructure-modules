@@ -6,7 +6,6 @@ locals {
   service_name = "prometheus-server"
 
   ec2_name_prefix = format("%s-ec2", local.service_name)
-  efs_name_prefix = format("%s-efs", local.service_name)
 }
 
 # ------------------------------------------------------------------------------
