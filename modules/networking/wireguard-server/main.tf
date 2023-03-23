@@ -135,6 +135,8 @@ module "ec2_iam_policy" {
 # EC2 INSTANCE
 # ------------------------------------------------------------------------------
 
+data "aws_default_tags" "current" {}
+
 locals {
   user_data_file = "${path.module}/templates/user_data.sh.tftpl"
 
@@ -183,7 +185,8 @@ module "ec2_instance" {
     service   = module.ec2_iam_policy.arn
   }
 
-  volume_tags = module.tags.tags
+  # Make sure the provider default tags are applied to volumes
+  volume_tags = merge(data.aws_default_tags.current.tags, module.tags.tags)
 
   tags = module.tags.tags
 }
