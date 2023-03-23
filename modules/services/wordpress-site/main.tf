@@ -297,6 +297,18 @@ module "asg" {
   ebs_optimized     = true
   enable_monitoring = true
 
+  block_device_mappings = [
+    {
+      device_name = "/dev/sda1"
+      ebs = {
+        volume_size           = 10
+        volume_type           = "gp3"
+        encrypted             = true
+        delete_on_termination = true
+      }
+    },
+  ]
+
   tag_specifications = [
     {
       resource_type = "volume"
@@ -383,6 +395,7 @@ module "rds" {
   create_random_password = true
   random_password_length = 32
 
+  storage_type          = "gp3"
   allocated_storage     = 5
   max_allocated_storage = 20
 
