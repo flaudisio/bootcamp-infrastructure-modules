@@ -335,6 +335,14 @@ module "asg" {
       "prometheus:wordpress-sites" = 1
     }
   )
+
+  # Make sure WordPress containers only spin up after the required infrastructure is created
+  depends_on = [
+    module.efs,
+    module.memcached,
+    module.rds,
+    aws_ssm_parameter.rds_credentials,
+  ]
 }
 
 # ------------------------------------------------------------------------------
