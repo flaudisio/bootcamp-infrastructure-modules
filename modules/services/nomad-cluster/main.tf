@@ -63,8 +63,6 @@ module "server_instances" {
 
   environment = var.environment
 
-  vpc_id          = var.vpc_id
-  vpc_cidr_block  = var.vpc_cidr_block
   private_subnets = var.private_subnets
 
   key_name        = aws_key_pair.this.key_name
@@ -95,8 +93,6 @@ module "client_instances" {
 
   environment = var.environment
 
-  vpc_id          = var.vpc_id
-  vpc_cidr_block  = var.vpc_cidr_block
   private_subnets = var.private_subnets
 
   key_name        = aws_key_pair.this.key_name
