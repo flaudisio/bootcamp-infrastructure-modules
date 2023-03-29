@@ -19,7 +19,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_client_instances"></a> [client\_instances](#module\_client\_instances) | ./modules/instances | n/a |
-| <a name="module_intra_security_group"></a> [intra\_security\_group](#module\_intra\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
+| <a name="module_cluster_security_group"></a> [cluster\_security\_group](#module\_cluster\_security\_group) | terraform-aws-modules/security-group/aws | 4.16.2 |
 | <a name="module_server_instances"></a> [server\_instances](#module\_server\_instances) | ./modules/instances | n/a |
 | <a name="module_tags"></a> [tags](#module\_tags) | flaudisio/standard-tags/aws | 0.3.0 |
 
@@ -55,6 +55,6 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_client_asg_names"></a> [client\_asg\_names](#output\_client\_asg\_names) | The names of the clients' auto scaling groups |
-| <a name="output_cluster_intra_security_group"></a> [cluster\_intra\_security\_group](#output\_cluster\_intra\_security\_group) | The name of the cluster intra security group |
+| <a name="output_cluster_security_group"></a> [cluster\_security\_group](#output\_cluster\_security\_group) | The name of the cluster intra communication security group |
 | <a name="output_server_asg_name"></a> [server\_asg\_name](#output\_server\_asg\_name) | The name of the server auto scaling group |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

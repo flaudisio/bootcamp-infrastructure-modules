@@ -26,7 +26,7 @@ resource "aws_key_pair" "this" {
 # CLUSTER SECURITY GROUP
 # ------------------------------------------------------------------------------
 
-module "intra_security_group" {
+module "cluster_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "4.16.2"
 
@@ -68,7 +68,7 @@ module "server_instances" {
   private_subnets = var.private_subnets
 
   key_name        = aws_key_pair.this.key_name
-  security_groups = concat([module.intra_security_group.security_group_id], var.attach_security_groups)
+  security_groups = concat([module.cluster_security_group.security_group_id], var.attach_security_groups)
 
   owner = var.owner
 
@@ -100,7 +100,7 @@ module "client_instances" {
   private_subnets = var.private_subnets
 
   key_name        = aws_key_pair.this.key_name
-  security_groups = concat([module.intra_security_group.security_group_id], var.attach_security_groups)
+  security_groups = concat([module.cluster_security_group.security_group_id], var.attach_security_groups)
 
   owner = var.owner
 
