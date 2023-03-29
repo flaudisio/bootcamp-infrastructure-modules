@@ -1,12 +1,4 @@
 # ------------------------------------------------------------------------------
-# LOCALS
-# ------------------------------------------------------------------------------
-
-locals {
-  service_name = "nomad-${var.cluster_name}"
-}
-
-# ------------------------------------------------------------------------------
 # TAGS
 # ------------------------------------------------------------------------------
 
@@ -16,7 +8,7 @@ module "tags" {
 
   environment = var.environment
   owner       = var.owner
-  service     = local.service_name
+  service     = var.cluster_name
 }
 
 # ------------------------------------------------------------------------------
@@ -24,7 +16,7 @@ module "tags" {
 # ------------------------------------------------------------------------------
 
 resource "aws_key_pair" "this" {
-  key_name   = local.service_name
+  key_name   = var.cluster_name
   public_key = var.cluster_public_key
 
   tags = module.tags.tags
@@ -34,12 +26,12 @@ resource "aws_key_pair" "this" {
 # CLUSTER SECURITY GROUP
 # ------------------------------------------------------------------------------
 
-module "intra_security_group" {
+module "cluster_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "4.16.2"
 
-  name        = format("%s-intra", local.service_name)
-  description = "${local.service_name} - Intra communication"
+  name        = format("%s-intra", var.cluster_name)
+  description = "${var.cluster_name} - Cluster intra communication"
   vpc_id      = var.vpc_id
 
   ingress_with_self = [
@@ -71,16 +63,14 @@ module "server_instances" {
 
   environment = var.environment
 
-  vpc_id          = var.vpc_id
-  vpc_cidr_block  = var.vpc_cidr_block
   private_subnets = var.private_subnets
 
   key_name        = aws_key_pair.this.key_name
-  security_groups = concat([module.intra_security_group.security_group_id], var.attach_security_groups)
+  security_groups = concat([module.cluster_security_group.security_group_id], var.attach_security_groups)
 
   owner = var.owner
 
-  service_name = format("%s-servers", local.service_name)
+  service_name = format("%s-servers", var.cluster_name)
   service_role = "nomad-server"
 
   ami_name         = var.server_ami_name
@@ -103,16 +93,14 @@ module "client_instances" {
 
   environment = var.environment
 
-  vpc_id          = var.vpc_id
-  vpc_cidr_block  = var.vpc_cidr_block
   private_subnets = var.private_subnets
 
   key_name        = aws_key_pair.this.key_name
-  security_groups = concat([module.intra_security_group.security_group_id], var.attach_security_groups)
+  security_groups = concat([module.cluster_security_group.security_group_id], var.attach_security_groups)
 
   owner = var.owner
 
-  service_name = format("%s-clients-%s", local.service_name, each.key)
+  service_name = format("%s-clients-%s", var.cluster_name, each.key)
   service_role = "nomad-client"
 
   ami_name         = each.value.ami_name
