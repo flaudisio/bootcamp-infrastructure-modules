@@ -83,5 +83,21 @@ module "infra_services_security_group" {
     },
   ]
 
+  # Allow communication between Consul clients
+  # Refs:
+  # - https://developer.hashicorp.com/consul/tutorials/production-deploy/reference-architecture#recommended-architecture
+  # - https://github.com/terraform-aws-modules/terraform-aws-security-group/blob/v4.17.1/rules.tf#L28
+  ingress_with_self = [
+    {
+      rule = "consul-tcp"
+    },
+    {
+      rule = "consul-serf-lan-tcp"
+    },
+    {
+      rule = "consul-serf-lan-udp"
+    },
+  ]
+
   tags = module.tags.tags
 }
