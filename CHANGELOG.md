@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### New modules
+
+- `services/consul-cluster`
+
+### Updates
+
+- All module have been updated to use `standard-tags` v0.3.0, which means the `service` tag has been renamed to `service-name`.
+- Terraform has been updated to v1.4.2.
+- The TFLint hook as been added to pre-commit configuration.
+
 ## v0.5.0 - 2023-03-23
 
 ### New modules
