@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.6.1 - 2023-03-29
+
 ### Updates
 
 - `services/nomad-cluster`
