@@ -264,13 +264,13 @@ resource "random_password" "wg_portal_admin" {
 
 resource "aws_ssm_parameter" "wg_portal_credentials" {
   for_each = {
-    wg-portal-admin-username = format("wg-admin@%s", var.account_route53_zone_name)
-    wg-portal-admin-password = random_password.wg_portal_admin.result
-    wg-portal-email-username = module.smtp_iam_user.iam_access_key_id
-    wg-portal-email-password = module.smtp_iam_user.iam_access_key_ses_smtp_password_v4
+    admin-username = format("wg-admin@%s", var.account_route53_zone_name)
+    admin-password = random_password.wg_portal_admin.result
+    email-username = module.smtp_iam_user.iam_access_key_id
+    email-password = module.smtp_iam_user.iam_access_key_ses_smtp_password_v4
   }
 
-  name        = format("/%s/%s", local.service_name, each.key)
+  name        = format("/%s/wg-portal/%s", local.service_name, each.key)
   description = "WireGuard - WG Portal credentials - ${local.service_name}"
 
   type  = "SecureString"
