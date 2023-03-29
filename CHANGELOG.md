@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Updates
+
+- `services/nomad-cluster`
+  - The number of server instances can now be between 1 and 7.
+
 ## v0.6.0 - 2023-03-29
 
 ### New modules
@@ -10,9 +15,18 @@
 
 ### Updates
 
-- All module have been updated to use `standard-tags` v0.3.0, which means the `service` tag has been renamed to `service-name`.
-- Terraform has been updated to v1.4.2.
-- The TFLint hook as been added to pre-commit configuration.
+- All modules
+  - The `standard-tags` module has been bumped to v0.3.0, which means the `service` tag has been renamed to `service-name`.
+- `services/nomad-cluster`
+  - The `cluster_name` input is now used as identifier for all resources.
+- `networking/wireguard-server`
+  - Update WG Portal base path on Parameter Store to `/wireguard/wg-portal`.
+- `networking/security-groups`
+  - Allow Consul client communication on `infra-services-access` security group.
+
+- Misc
+  - Terraform has been updated to v1.4.2.
+  - TFLint hook has been added to pre-commit configuration.
 
 ## v0.5.0 - 2023-03-23
 
