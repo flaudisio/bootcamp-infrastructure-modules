@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.6.0 - 2023-03-29
+
 ### New modules
 
 - `services/consul-cluster`
