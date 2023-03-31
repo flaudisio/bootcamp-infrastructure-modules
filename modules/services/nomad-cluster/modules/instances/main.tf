@@ -1,4 +1,12 @@
 # ------------------------------------------------------------------------------
+# LOCALS
+# ------------------------------------------------------------------------------
+
+locals {
+  ec2_name_prefix = format("%s-ec2", var.service_name)
+}
+
+# ------------------------------------------------------------------------------
 # TAGS
 # ------------------------------------------------------------------------------
 
@@ -66,7 +74,7 @@ module "asg_iam_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "5.9.2"
 
-  name        = var.service_name
+  name        = local.ec2_name_prefix
   description = "${var.service_name} - EC2 instances"
 
   policy = data.aws_iam_policy_document.asg_instances.json
@@ -151,7 +159,7 @@ module "asg" {
   # IAM role
   create_iam_instance_profile = true
 
-  iam_role_name            = var.service_name
+  iam_role_name            = local.ec2_name_prefix
   iam_role_use_name_prefix = false
   iam_role_description     = "${var.service_name} - EC2 instances"
 

@@ -4,6 +4,9 @@
 
 ### Updates
 
+- `services/nomad-cluster`
+  - Add `-ec2` suffix to IAM resources.
+
 - Misc
   - Terraform has been downgraded to v1.3.9.
 
