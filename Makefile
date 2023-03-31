@@ -23,14 +23,17 @@ test:  ## Run tests
 .PHONY: bump-version/major
 bump-version/major:  ## Increment the major version (X.y.z)
 	bump2version major
+	@echo ; git show
 
 .PHONY: bump-version/minor
 bump-version/minor:  ## Increment the minor version (x.Y.z)
 	bump2version minor
+	@echo ; git show
 
 .PHONY:  bump-version/patch
 bump-version/patch:  ## Increment the patch version (x.y.Z)
 	bump2version patch
+	@echo ; git show
 
 .PHONY: release
 release:  ## Push the new project version
