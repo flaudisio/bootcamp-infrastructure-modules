@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Updates
+
+- Misc
+  - Terraform has been downgraded to v1.3.9.
+
 ## v0.6.3 - 2023-03-31
 
 ### Updates
