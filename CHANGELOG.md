@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Updates
+
+- `services/nomad-cluster`
+  - Fix `server_instance_count` input validation.
+
 ## v0.6.1 - 2023-03-29
 
 ### Updates

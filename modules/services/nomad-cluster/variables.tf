@@ -64,7 +64,7 @@ variable "server_instance_count" {
   default     = 3
 
   validation {
-    condition     = contains(range(1, 8), var.instance_count)
+    condition     = contains(range(1, 8), var.server_instance_count)
     error_message = "The number of servers must be between 1 and 7."
   }
 }
