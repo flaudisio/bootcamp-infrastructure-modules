@@ -4,6 +4,9 @@
 
 ### Updates
 
+- `services/nomad-cluster`
+  - Update ASG IAM policy for accessing the Consul gossip key.
+
 - `mgmt/semaphore-ec2`, `mgmt/semaphore-ecs`
   - Update permissions for accessing SSM parameters.
 

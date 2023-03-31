@@ -40,12 +40,25 @@ data "aws_ami" "selected" {
 # ------------------------------------------------------------------------------
 
 data "aws_iam_policy_document" "asg_instances" {
+  # Required by Ansible dynamic inventory
   statement {
     effect = "Allow"
     actions = [
       "ec2:DescribeInstances",
     ]
     resources = ["*"]
+  }
+
+  # Required to configure Consul client via Ansible's 'amazon.aws.aws_ssm' lookup
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameter",
+    ]
+    resources = [
+      # The parameter path is defined by the 'consul-cluster' module
+      "arn:aws:ssm:*:*:parameter/consul/*/gossip-key",
+    ]
   }
 }
 
