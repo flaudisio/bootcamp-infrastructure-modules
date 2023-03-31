@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Updates
+
+- `mgmt/semaphore-ec2`, `mgmt/semaphore-ecs`
+  - Update permissions for accessing SSM parameters.
+
 ## v0.6.2 - 2023-03-31
 
 ### Updates

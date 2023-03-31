@@ -178,6 +178,7 @@ resource "aws_key_pair" "this" {
 # ------------------------------------------------------------------------------
 
 data "aws_iam_policy_document" "asg_instances" {
+  # Required by Ansible dynamic inventory
   statement {
     effect = "Allow"
     actions = [
@@ -186,24 +187,19 @@ data "aws_iam_policy_document" "asg_instances" {
     resources = ["*"]
   }
 
+  # Required to configure services via Ansible's 'amazon.aws.aws_ssm' lookup
   statement {
     effect = "Allow"
     actions = [
       "ssm:GetParameter",
-    ]
-    resources = values(aws_ssm_parameter.semaphore_credentials)[*].arn
-  }
-
-  statement {
-    effect = "Allow"
-    actions = [
-      "ssm:GetParameter",
+      "ssm:GetParameters",
     ]
     resources = [
-      "arn:aws:ssm:*:*:parameter/wireguard/*",
+      "arn:aws:ssm:*:*:parameter/*",
     ]
   }
 
+  # Backup bucket
   dynamic "statement" {
     for_each = var.backup_bucket != null ? [true] : []
 

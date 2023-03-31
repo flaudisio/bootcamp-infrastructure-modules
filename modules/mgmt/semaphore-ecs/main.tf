@@ -173,7 +173,7 @@ data "aws_iam_policy_document" "ecs_tasks" {
     resources = ["*"]
   }
 
-  # Required by Ansible 'amazon.aws.aws_ssm' lookup and ECS
+  # Required to configure services via Ansible's 'amazon.aws.aws_ssm' lookup
   statement {
     effect = "Allow"
     actions = [
@@ -181,13 +181,11 @@ data "aws_iam_policy_document" "ecs_tasks" {
       "ssm:GetParameters",
     ]
     resources = [
-      "arn:aws:ssm:*:*:parameter/${local.service_name}/*",
-      "arn:aws:ssm:*:*:parameter/wireguard/*",
-      "arn:aws:ssm:*:*:parameter/wordpress/*",
+      "arn:aws:ssm:*:*:parameter/*",
     ]
   }
 
-  # Required by ECS execute-command
+  # Required by ECS 'execute-command'
   statement {
     effect = "Allow"
     actions = [
