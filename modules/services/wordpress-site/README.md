@@ -59,7 +59,7 @@
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment name | `string` | n/a | yes |
 | <a name="input_memcached_instance_type"></a> [memcached\_instance\_type](#input\_memcached\_instance\_type) | The type of the ElastiCache/Memcached instance | `string` | n/a | yes |
 | <a name="input_memcached_subnet_group"></a> [memcached\_subnet\_group](#input\_memcached\_subnet\_group) | The name of the ElastiCache subnet group to be used by the Memcached cluster | `string` | n/a | yes |
-| <a name="input_owner"></a> [owner](#input\_owner) | The team that owns this WordPress site | `string` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | The team that owns the created resources | `string` | n/a | yes |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | A list of private subnet IDs to deploy the instances to | `list(string)` | n/a | yes |
 | <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | A list of public subnet IDs to deploy the load balancer to | `list(string)` | n/a | yes |
 | <a name="input_site_name"></a> [site\_name](#input\_site\_name) | The name of the site | `string` | n/a | yes |

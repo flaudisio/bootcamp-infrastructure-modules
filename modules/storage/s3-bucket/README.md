@@ -31,8 +31,8 @@ No resources.
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region | `string` | n/a | yes |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | The name of the S3 bucket | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment name | `string` | n/a | yes |
-| <a name="input_owner"></a> [owner](#input\_owner) | The team that owns the S3 bucket | `string` | n/a | yes |
-| <a name="input_service"></a> [service](#input\_service) | The service related to the S3 bucket | `string` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | The team that owns the created resources | `string` | n/a | yes |
+| <a name="input_service"></a> [service](#input\_service) | The service related to the created resources | `string` | n/a | yes |
 | <a name="input_append_account_id"></a> [append\_account\_id](#input\_append\_account\_id) | Whether to append the account ID to the bucket name | `bool` | `false` | no |
 | <a name="input_append_environment"></a> [append\_environment](#input\_append\_environment) | Whether to append the environment name to the bucket name | `bool` | `false` | no |
 | <a name="input_append_region"></a> [append\_region](#input\_append\_region) | Whether to append the current AWS region to the bucket name | `bool` | `false` | no |

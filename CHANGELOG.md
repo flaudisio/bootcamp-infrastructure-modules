@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Updates
+
+- Documentation
+  - Improve descriptions for `owner` and `service` inputs.
+
 ## v0.7.0 - 2023-03-31
 
 ### Updates

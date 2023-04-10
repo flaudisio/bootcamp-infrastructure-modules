@@ -36,7 +36,7 @@
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name of the Nomad cluster | `string` | n/a | yes |
 | <a name="input_cluster_public_key"></a> [cluster\_public\_key](#input\_cluster\_public\_key) | The SSH public key material to be configured in all EC2 instances of the cluster | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment name | `string` | n/a | yes |
-| <a name="input_owner"></a> [owner](#input\_owner) | The team that owns this WordPress site | `string` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | The team that owns the created resources | `string` | n/a | yes |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | A list of private subnet IDs to deploy the instances to | `list(string)` | n/a | yes |
 | <a name="input_server_instance_type"></a> [server\_instance\_type](#input\_server\_instance\_type) | The type of the server instances | `string` | n/a | yes |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The CIDR block of the VPC where the resources will be deployed on | `string` | n/a | yes |

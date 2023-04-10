@@ -22,7 +22,7 @@ variable "environment" {
 # ------------------------------------------------------------------------------
 
 variable "owner" {
-  description = "The team that owns this WordPress site"
+  description = "The team that owns the created resources"
   type        = string
 }
 

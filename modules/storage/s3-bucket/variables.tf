@@ -22,12 +22,12 @@ variable "environment" {
 # ------------------------------------------------------------------------------
 
 variable "owner" {
-  description = "The team that owns the S3 bucket"
+  description = "The team that owns the created resources"
   type        = string
 }
 
 variable "service" {
-  description = "The service related to the S3 bucket"
+  description = "The service related to the created resources"
   type        = string
 }
 

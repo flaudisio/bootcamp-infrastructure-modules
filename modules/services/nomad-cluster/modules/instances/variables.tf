@@ -12,7 +12,7 @@ variable "environment" {
 # ------------------------------------------------------------------------------
 
 variable "owner" {
-  description = "The team that owns this WordPress site"
+  description = "The team that owns the created resources"
   type        = string
 }
 
@@ -33,7 +33,7 @@ variable "security_groups" {
 }
 
 variable "service_name" {
-  description = "The service name to identify resources"
+  description = "The service related to the created resources"
   type        = string
 }
 
