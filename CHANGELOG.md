@@ -4,6 +4,10 @@
 
 ### Updates
 
+- `mgmt/semaphore-ecs`
+  - Bump RDS module to v5.9.0.
+  - Improve documentation and input name.
+
 - Documentation
   - Improve descriptions for `owner` and `service` inputs.
 
