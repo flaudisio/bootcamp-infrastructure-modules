@@ -72,7 +72,7 @@
 | <a name="input_semaphore_admin_email"></a> [semaphore\_admin\_email](#input\_semaphore\_admin\_email) | The email of the admin user. Defaults to `<admin-username>@<account-domain>` | `string` | `null` | no |
 | <a name="input_semaphore_admin_fullname"></a> [semaphore\_admin\_fullname](#input\_semaphore\_admin\_fullname) | The full name of the admin user | `string` | `"Semaphore Admin"` | no |
 | <a name="input_semaphore_admin_username"></a> [semaphore\_admin\_username](#input\_semaphore\_admin\_username) | The username of the admin user | `string` | `"admin"` | no |
-| <a name="input_semaphore_extra_env_vars"></a> [semaphore\_extra\_env\_vars](#input\_semaphore\_extra\_env\_vars) | A map of extra environment variables to be configured in the Semaphore container | `map(string)` | `{}` | no |
+| <a name="input_semaphore_custom_env_vars"></a> [semaphore\_custom\_env\_vars](#input\_semaphore\_custom\_env\_vars) | A map of custom environment variables to be configured in the Semaphore container | `map(string)` | `{}` | no |
 | <a name="input_semaphore_image"></a> [semaphore\_image](#input\_semaphore\_image) | Docker image to run the Semaphore containers | `string` | `"flaudisio/bootcamp-semaphore:2.8.89-debian"` | no |
 | <a name="input_semaphore_max_parallel_tasks"></a> [semaphore\_max\_parallel\_tasks](#input\_semaphore\_max\_parallel\_tasks) | Max allowed parallel tasks if `semaphore_concurrency_mode != ""`. Can also be set/changed within the web UI (project settings) | `number` | `2` | no |
 | <a name="input_semaphore_storage_size"></a> [semaphore\_storage\_size](#input\_semaphore\_storage\_size) | The size of the ephemeral storage available to the Semaphore container | `number` | `30` | no |

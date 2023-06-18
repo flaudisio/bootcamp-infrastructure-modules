@@ -140,8 +140,8 @@ variable "semaphore_storage_size" {
   default     = 30
 }
 
-variable "semaphore_extra_env_vars" {
-  description = "A map of extra environment variables to be configured in the Semaphore container"
+variable "semaphore_custom_env_vars" {
+  description = "A map of custom environment variables to be configured in the Semaphore container"
   type        = map(string)
   default     = {}
 }

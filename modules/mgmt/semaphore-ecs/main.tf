@@ -371,6 +371,7 @@ resource "aws_ecs_task_definition" "this" {
     size_in_gib = var.semaphore_storage_size
   }
 
+  # Ref: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#container_definitions
   container_definitions = jsonencode([
     {
       name      = "semaphore"
@@ -383,7 +384,7 @@ resource "aws_ecs_task_definition" "this" {
         },
       ]
       environment = [
-        for k, v in merge(local.semaphore_env_vars, var.semaphore_extra_env_vars) :
+        for k, v in merge(local.semaphore_env_vars, var.semaphore_custom_env_vars) :
         {
           name  = k
           value = v
@@ -570,7 +571,7 @@ resource "random_password" "semaphore_credentials" {
 }
 
 resource "aws_ssm_parameter" "semaphore_credentials" {
-  # NOTE: map keys MUST be valid Semaphore environment variables
+  # Note: map keys MUST be valid Semaphore environment variables; see 'container_definitions' for details
   for_each = {
     SEMAPHORE_DB_PASS               = module.rds.db_instance_password
     SEMAPHORE_COOKIE_HASH           = base64encode(random_password.semaphore_credentials["cookie-hash"].result)
