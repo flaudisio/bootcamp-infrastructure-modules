@@ -504,7 +504,7 @@ module "rds_security_group" {
 
 module "rds" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "5.2.3"
+  version = "5.9.0"
 
   identifier = local.service_name
 
