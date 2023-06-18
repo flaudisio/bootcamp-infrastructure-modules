@@ -380,8 +380,10 @@ module "asg" {
     service   = module.asg_iam_policy.arn
   }
 
-  # Specific tags for the EC2 instances
+  # Specific tags for EC2 instances
   autoscaling_group_tags = {
+    # Used by Ansible group vars
+    # See https://github.com/flaudisio/bootcamp-ansible-playbooks/blob/main/inventories/development/group_vars/consul_01.yml
     "ansible:ssm-cluster-path" = local.ssm_base_path
   }
 
